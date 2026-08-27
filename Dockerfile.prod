@@ -1,0 +1,37 @@
+# Dockerfile cho môi trường production của Nuxt 3/4
+# Build multi-stage để giảm kích thước image cuối cùng
+
+# -------------------------------
+# Giai đoạn 1: Build ứng dụng
+# -------------------------------
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+
+# Build ứng dụng Nuxt
+RUN npm run build
+
+# -------------------------------
+# Giai đoạn 2: Runtime image
+# -------------------------------
+FROM node:22-alpine AS runtime
+
+WORKDIR /app
+
+# Copy chỉ output build từ stage trước
+COPY --from=builder /app/.output ./.output
+
+# Không cần devDependencies nên image rất nhẹ
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=production
+
+EXPOSE 3000
+
+# Chạy ứng dụng production
+CMD ["node", ".output/server/index.mjs"]

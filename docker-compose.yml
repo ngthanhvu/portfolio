@@ -1,0 +1,21 @@
+services:
+  webmail:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webmail-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount mã nguồn để hot reload khi dev
+      - .:/app
+      # Giữ node_modules trong container, không mount từ host
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3000
+    # Tương thích với Nuxt dev server
+    stdin_open: true
+    tty: true
+    command: npm run dev

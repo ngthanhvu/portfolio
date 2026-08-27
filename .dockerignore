@@ -1,0 +1,38 @@
+# Build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Dependencies
+node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Editor/OS
+.DS_Store
+.fleet
+.idea
+.vscode
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# README
+README.md
