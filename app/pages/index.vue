@@ -31,8 +31,8 @@ useHead({
 </script>
 
 <template>
-    <div class="relative">
-        <GridBackground />
+    <div class="relative min-h-screen">
+        <GridBackground class="h-full w-full" />
 
         <!-- Hero -->
         <section class="relative z-20 mx-auto mt-8 w-full max-w-5xl px-7 md:mt-12 xl:px-0">
