@@ -313,6 +313,11 @@ onBeforeUnmount(() => {
             </div>
           </aside>
         </section>
+
+        <!-- Comments -->
+        <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
+          <CommentSection />
+        </section>
       </div>
     </main>
   </div>
