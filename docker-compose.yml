@@ -1,9 +1,9 @@
 services:
-  webmail:
+  portfolio:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: webmail-dev
+    container_name: portfolio-dev
     ports:
       - "3000:3000"
     volumes:

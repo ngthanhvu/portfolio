@@ -1,9 +1,9 @@
 services:
-  webmail:
+  portfolio:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    container_name: webmail-prod
+    container_name: portfolio-prod
     ports:
       - "3000:3000"
     environment:

@@ -37,7 +37,7 @@ onMounted(() => {
 
   observer = new IntersectionObserver((entries) => {
     const target = entries[0]
-    if (target.isIntersecting && hasMore.value) {
+    if (target?.isIntersecting && hasMore.value) {
       page.value += 1
     }
   }, {

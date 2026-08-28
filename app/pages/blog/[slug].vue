@@ -37,7 +37,7 @@ const headings = computed(() => {
 
   return matches.map((match, index) => ({
     level: Number(match[1]),
-    text: match[3].replace(/<[^>]+>/g, ''),
+    text: (match[3] ?? '').replace(/<[^>]+>/g, ''),
     id: `heading-${index}`
   }))
 })
@@ -219,23 +219,18 @@ onBeforeUnmount(() => {
           class="absolute top-0 left-0 mt-1 hidden h-full w-px -translate-x-px bg-linear-to-b from-transparent to-white md:block" />
         <div
           class="absolute top-0 right-0 mt-1 hidden h-full w-px translate-x-px bg-linear-to-b from-transparent to-white md:block" />
-
         <!-- Header -->
         <div class="mx-auto w-full max-w-2xl px-5 lg:px-0">
           <h1 class="text-3xl font-bold md:mb-8 md:text-4xl lg:text-5xl">
             {{ post?.title }}
           </h1>
-
           <div class="mb-6 font-semibold text-neutral-500">
             {{ post?.publishedAt }}
             ·
-
             <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
               {{ post?.category }}
             </NuxtLink>
-
             ·
-
             <span class="inline-flex flex-wrap gap-1">
               <NuxtLink v-for="tag in post?.tags" :key="tag" to="/"
                 class="hover:underline decoration-dashed underline-offset-4">

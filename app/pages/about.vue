@@ -13,7 +13,7 @@ const headings = computed(() => {
   const matches = [...about.content.matchAll(/<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/g)]
   return matches.map((match, index) => ({
     level: Number(match[1]),
-    text: match[3].replace(/<[^>]+>/g, ''),
+    text: (match[3] ?? '').replace(/<[^>]+>/g, ''),
     id: `heading-${index}`,
   }))
 })
