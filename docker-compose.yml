@@ -15,7 +15,40 @@ services:
       - NODE_ENV=development
       - HOST=0.0.0.0
       - PORT=3000
+      - DATABASE_URL=mysql://portfolio:portfolio@db:3306/portfolio
+    depends_on:
+      - db
     # Tương thích với Nuxt dev server
     stdin_open: true
     tty: true
     command: npm run dev
+
+  db:
+    image: mysql:8.0
+    container_name: portfolio-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: portfolio
+      MYSQL_USER: portfolio
+      MYSQL_PASSWORD: portfolio
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  drizzle-studio:
+    image: ghcr.io/drizzle-team/gateway:latest
+    container_name: portfolio-drizzle-studio
+    restart: unless-stopped
+    ports:
+      - "4983:4983"
+    environment:
+      - PORT=4983
+      - MASTERPASS=${DRIZZLE_STUDIO_MASTERPASS:-admin}
+    volumes:
+      - drizzle_studio:/app
+
+volumes:
+  db_data:
+  drizzle_studio:
