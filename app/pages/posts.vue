@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { allPosts } = usePosts()
+const { allPosts, fetchPosts } = usePosts()
+
+onMounted(() => {
+  fetchPosts()
+})
 
 const searchQuery = ref('')
 const pageSize = 6

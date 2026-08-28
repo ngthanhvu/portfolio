@@ -1,8 +1,12 @@
 <script setup lang="ts">
 const route = useRoute()
-const { profile } = useProfile()
+const { profile, fetchProfile } = useProfile()
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
+
+onMounted(() => {
+  fetchProfile()
+})
 
 const navLinks = [
   { name: 'Home', path: '/' },

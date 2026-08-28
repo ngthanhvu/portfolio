@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { profile } = useProfile()
+const { profile, fetchProfile } = useProfile()
+
+onMounted(() => {
+  fetchProfile()
+})
 
 const runningDays = computed(() => {
   const start = new Date(profile.value.startDate)

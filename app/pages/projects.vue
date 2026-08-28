@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { allProjects } = useProjects()
+const { allProjects, fetchProjects } = useProjects()
+
+onMounted(() => {
+  fetchProjects()
+})
 
 useHead({
   title: 'Projects | Portfolio',

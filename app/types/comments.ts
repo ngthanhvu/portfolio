@@ -6,15 +6,18 @@ export interface CommentUser {
 }
 
 export interface Comment {
-  id: string
-  user: CommentUser
+  id: number
+  postId: number
+  parentId: number | null
+  userId: number | null
+  authorName: string
+  authorAvatar: string | null
   content: string
-  createdAt: string
-  createdAtTimestamp: number
   likes: number
   dislikes: number
-  replies: Comment[]
-  replyingTo?: string
+  isAuthor: boolean
+  status: string
+  createdAt: string
 }
 
 export type CommentSort = 'best' | 'newest' | 'oldest'

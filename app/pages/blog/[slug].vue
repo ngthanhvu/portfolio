@@ -4,11 +4,12 @@ import { usePosts } from '~/composables/usePosts'
 const route = useRoute()
 const { getPostBySlug } = usePosts()
 
-const post = computed(() =>
-  getPostBySlug(route.params.slug as string)
+const { data: post, error } = await useAsyncData(
+  `post-${route.params.slug}`,
+  () => getPostBySlug(route.params.slug as string)
 )
 
-if (!post.value) {
+if (error.value || !post.value) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Bài viết không tồn tại'
@@ -316,7 +317,7 @@ onBeforeUnmount(() => {
 
         <!-- Comments -->
         <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
-          <CommentSection />
+          <CommentSection v-if="post" :post-id="Number(post.id)" />
         </section>
       </div>
     </main>

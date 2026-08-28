@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import type { Comment, CommentSort } from '~/types/comments'
+import type { CommentSort } from '~/types/comments'
+
+const props = defineProps<{
+    postId: number
+}>()
 
 const sort = ref<CommentSort>('best')
 const newComment = ref('')
 const guestName = ref('')
 
 const currentUser = ref<{ name: string; avatar: string } | null>(null)
-
-function countComments(comments: Comment[]): number {
-    return comments.reduce((total, comment) => total + 1 + countComments(comment.replies), 0)
-}
-
-const commentCount = computed(() => countComments(comments.value))
 
 const socialProviders = [
     { name: 'Disqus', color: 'bg-[#2e9fff]', text: 'D' },
@@ -22,112 +20,53 @@ const socialProviders = [
     { name: 'Apple', color: 'bg-[#0a0a0a]', icon: 'lucide:apple' },
 ]
 
-const comments = ref<Comment[]>([
-    {
-        id: '1',
-        user: {
-            id: 'u1',
-            name: 'dnauguse',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=dnauguse',
-        },
-        content: `xlog没了真可惜呀！其实作为usdt内容付费还挺不错……\n\nhttps://t.me/dsuse/21695\n\n借着这个机会总结了下自己对AI“入侵编程”的体验，和DIY感觉完全相反（属于是相见恨晚）唉，最近写文越来越长了，都没法内嵌在评论里了。恐怕以后也会走向杰哥和ray宋的行文风格吧……`,
-        createdAt: '8 months ago',
-        createdAtTimestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 240).getTime(),
-        likes: 2,
-        dislikes: 0,
-        replies: [
-            {
-                id: '2',
-                user: {
-                    id: 'u2',
-                    name: 'DIYgod',
-                    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=diygod',
-                    isAuthor: true,
-                },
-                content: '🤔 难道审美、洞察力就能比得过 AI 了吗？',
-                createdAt: '5 months ago',
-                createdAtTimestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 150).getTime(),
-                likes: 0,
-                dislikes: 0,
-                replyingTo: 'dnauguse',
-                replies: [],
-            },
-            {
-                id: '3',
-                user: {
-                    id: 'u3',
-                    name: 'judg',
-                    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=judg',
-                },
-                content: 'xlog发生什么事了，之前就发现博客进不去了',
-                createdAt: '6 months ago',
-                createdAtTimestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 180).getTime(),
-                likes: 0,
-                dislikes: 0,
-                replyingTo: 'dnauguse',
-                replies: [],
-            },
-        ],
-    },
-    {
-        id: '4',
-        user: {
-            id: 'u4',
-            name: '麓下雪',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=luxiaxue',
-        },
-        content: '很好的分享，日常离不开folo应用，祝folo越来越好。',
-        createdAt: '8 months ago',
-        createdAtTimestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 240).getTime(),
-        likes: 2,
-        dislikes: 0,
-        replies: [],
-    },
-])
+const { data, refresh } = await useFetch(() => `/api/comments?postId=${props.postId}`)
+
+const comments = computed(() => data.value?.data || [])
+
+const commentCount = computed(() => comments.value.length)
 
 const sortedComments = computed(() => {
     const list = [...comments.value]
     if (sort.value === 'newest') {
-        return list.sort((a, b) => b.createdAtTimestamp - a.createdAtTimestamp)
+        return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     }
     if (sort.value === 'oldest') {
-        return list.sort((a, b) => a.createdAtTimestamp - b.createdAtTimestamp)
+        return list.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
     }
     return list.sort((a, b) => b.likes - a.likes)
 })
 
-function handleSubmit() {
+async function handleSubmit() {
     if (!newComment.value.trim()) return
-    comments.value.unshift({
-        id: Date.now().toString(),
-        user: {
-            id: 'me',
-            name: currentUser.value?.name || guestName.value || 'Anonymous',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=me',
+
+    await $fetch('/api/comments', {
+        method: 'POST',
+        body: {
+            postId: props.postId,
+            authorName: currentUser.value?.name || guestName.value || 'Anonymous',
+            authorAvatar: currentUser.value?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=anonymous',
+            content: newComment.value,
         },
-        content: newComment.value,
-        createdAt: 'Just now',
-        createdAtTimestamp: Date.now(),
-        likes: 0,
-        dislikes: 0,
-        replies: [],
     })
+
     newComment.value = ''
+    await refresh()
 }
 
-function handleLike(id: string) {
+async function handleLike(id: string) {
     console.log('like', id)
 }
 
-function handleDislike(id: string) {
+async function handleDislike(id: string) {
     console.log('dislike', id)
 }
 
-function handleReply(id: string) {
+async function handleReply(id: string) {
     console.log('reply', id)
 }
 
-function handleShare(id: string) {
+async function handleShare(id: string) {
     console.log('share', id)
 }
 </script>
