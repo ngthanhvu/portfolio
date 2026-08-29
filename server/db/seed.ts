@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import bcrypt from 'bcryptjs'
 import { db } from '../utils/db'
 import {
   comments,
@@ -14,6 +15,8 @@ import {
 async function seed() {
   console.log('Seeding started...')
 
+  const hashedPassword = await bcrypt.hash('admin123', 10)
+
   // Clean existing data
   await db.delete(comments)
   await db.delete(postTags)
@@ -25,41 +28,31 @@ async function seed() {
   await db.delete(users)
 
   // Seed users / authors
-  const [authorA] = await db
+  const [admin] = await db
     .insert(users)
     .values({
-      name: 'Nguyễn Văn A',
-      nickname: 'devA',
-      email: 'hello@deva.dev',
-      avatar: 'https://i.pravatar.cc/150?u=a',
-      bio: 'Một lập trình viên đam mê xây dựng sản phẩm đẹp, đơn giản và hữu ích.',
+      name: 'Admin',
+      nickname: 'admin',
+      email: 'admin@thanhvu.net',
+      password: hashedPassword,
+      avatar: 'https://i.pravatar.cc/150?u=admin',
+      bio: 'Quản trị viên hệ thống.',
       role: 'admin',
     })
     .$returningId()
 
-  const [authorB] = await db
-    .insert(users)
-    .values({
-      name: 'Trần Thị B',
-      nickname: 'tranthib',
-      email: 'b@example.com',
-      avatar: 'https://i.pravatar.cc/150?u=b',
-      role: 'author',
-    })
-    .$returningId()
-
-  if (!authorA?.id || !authorB?.id) {
-    throw new Error('Failed to seed users')
+  if (!admin?.id) {
+    throw new Error('Failed to seed admin user')
   }
 
   // Seed profile
   await db.insert(profiles).values({
-    name: 'Nguyễn Văn A',
-    nickname: 'devA',
+    name: 'Admin',
+    nickname: 'admin',
     tagline: 'Code is my craft, bugs are my teachers.',
     bio: 'Một lập trình viên đam mê xây dựng sản phẩm đẹp, đơn giản và hữu ích.',
     avatar: 'https://i.pravatar.cc/300?u=portfolio',
-    email: 'hello@deva.dev',
+    email: 'admin@thanhvu.net',
     startDate: '2020-01-01',
   })
 
@@ -104,7 +97,7 @@ async function seed() {
       content: `<p>Tailwind CSS v4 đã chính thức ra mắt với nhiều thay đổi lớn...</p>`,
       coverImage: 'https://images.unsplash.com/photo-1555066931-4365d7f2f5a8?w=800&q=80',
       category: 'Frontend',
-      authorId: authorA.id,
+      authorId: admin.id,
       publishedAt: new Date('2026-08-27'),
       readTime: '5 phút',
     })
@@ -120,7 +113,7 @@ async function seed() {
       content: `<p>Composition API là một trong những tính năng lớn nhất của Vue 3...</p>`,
       coverImage: 'https://images.unsplash.com/photo-1633356122544-f1340f3c0d9c?w=800&q=80',
       category: 'Vue',
-      authorId: authorB.id,
+      authorId: admin.id,
       publishedAt: new Date('2026-08-25'),
       readTime: '8 phút',
     })

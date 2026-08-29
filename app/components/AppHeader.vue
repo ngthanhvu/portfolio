@@ -4,6 +4,10 @@ const { profile, fetchProfile } = useProfile()
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 
+useHead({
+  link: [{ rel: 'icon', href: () => profile.value.avatar || '/favicon.ico' }],
+})
+
 onMounted(() => {
   fetchProfile()
 })

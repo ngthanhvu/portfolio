@@ -5,10 +5,10 @@ onMounted(() => {
   fetchProfile()
 })
 
+const startTime = useState<number>('app:startTime', () => Date.now())
+
 const runningDays = computed(() => {
-  const start = new Date(profile.value.startDate)
-  const now = new Date()
-  const diff = now.getTime() - start.getTime()
+  const diff = Date.now() - startTime.value
   return Math.floor(diff / (1000 * 60 * 60 * 24))
 })
 
@@ -31,10 +31,8 @@ const currentYear = new Date().getFullYear()
         &copy; {{ currentYear }} {{ profile.name }}. All rights reserved. Please credit when sharing.
       </p>
 
-      <NuxtLink
-        to="/sitemap.xml"
-        class="mt-4 text-sm text-neutral-700 transition-colors hover:text-neutral-900 sm:ml-4 sm:mt-0 sm:border-l sm:border-neutral-300 sm:pl-4"
-      >
+      <NuxtLink to="/sitemap.xml"
+        class="mt-4 text-sm text-neutral-700 transition-colors hover:text-neutral-900 sm:ml-4 sm:mt-0 sm:border-l sm:border-neutral-300 sm:pl-4">
         Sitemap
       </NuxtLink>
     </div>

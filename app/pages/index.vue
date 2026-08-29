@@ -4,9 +4,9 @@ const { allPosts, fetchPosts } = usePosts()
 const { allProjects, fetchProjects } = useProjects()
 
 onMounted(() => {
-  fetchProfile()
-  fetchPosts()
-  fetchProjects()
+    fetchProfile()
+    fetchPosts()
+    fetchProjects()
 })
 
 const latestPosts = computed(() => allPosts.value.slice(0, 5))
@@ -32,7 +32,7 @@ const topTags = computed(() => {
 })
 
 useHead({
-    title: profile.value.name,
+    title: () => profile.value.name,
 })
 </script>
 

@@ -16,6 +16,7 @@ services:
       - HOST=0.0.0.0
       - PORT=3000
       - DATABASE_URL=mysql://portfolio:portfolio@db:3306/portfolio
+      - JWT_SECRET=your-super-secret-jwt-key-change-this
     depends_on:
       - db
     # Tương thích với Nuxt dev server
