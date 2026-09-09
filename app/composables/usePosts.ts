@@ -45,19 +45,11 @@ function mapPost(post: ApiPost): BlogPost {
 }
 
 export function usePosts() {
-  const allPosts = ref<BlogPost[]>([])
-  const loading = ref(false)
-
-  async function fetchPosts() {
-    loading.value = true
-    try {
-      const { data } = await $fetch<{ data: ApiPost[]; pagination: unknown }>('/api/posts')
-      allPosts.value = data.map(mapPost)
-    }
-    finally {
-      loading.value = false
-    }
-  }
+  const { data: allPosts, pending: loading, error, refresh: fetchPosts } = useAsyncData(
+    'posts',
+    () => $fetch<{ data: ApiPost[] }>('/api/posts').then(r => r.data.map(mapPost)),
+    { default: () => [] as BlogPost[] },
+  )
 
   async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
     const post = await $fetch<ApiPost>(`/api/posts/slug/${slug}`)
@@ -67,6 +59,7 @@ export function usePosts() {
   return {
     allPosts,
     loading,
+    error,
     fetchPosts,
     getPostBySlug,
   }

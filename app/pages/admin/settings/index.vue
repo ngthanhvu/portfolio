@@ -5,6 +5,12 @@ definePageMeta({
   layout: 'admin',
 })
 
+useHead({
+  title: 'Settings | Admin',
+})
+
+const collapsed = useState<boolean>('admin-sidebar-collapsed', () => false)
+
 const { data, pending, refresh } = await useFetch<{ profile: ApiProfile | null; socials: ApiSocialLink[] }>('/api/profile')
 
 const form = reactive({
@@ -69,6 +75,7 @@ async function onSubmit() {
     })
     saved.value = true
     await refresh()
+    setTimeout(() => { saved.value = false }, 2500)
   }
   catch (err: any) {
     error.value = err?.data?.message || err?.message || 'Failed to save'
@@ -80,110 +87,172 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-6">Settings</h1>
+  <div class="w-full">
+    <header class="mb-8">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 class="text-2xl font-bold text-foreground">
+            Profile Settings
+          </h1>
+          <p class="mt-1 text-sm text-muted-foreground">
+            Manage the public profile and social links shown across the site.
+          </p>
+        </div>
+        <span v-if="form.startDate"
+          class="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+          <Icon name="lucide:calendar" class="h-3 w-3" />
+          Since {{ form.startDate }}
+        </span>
+      </div>
+    </header>
 
-    <div v-if="pending" class="text-neutral-500">Loading...</div>
+    <div v-if="pending"
+      class="flex items-center gap-2 rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+      <Icon name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
+      Loading profile...
+    </div>
 
-    <form v-else class="max-w-2xl space-y-4" @submit.prevent="onSubmit">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-500">Hero / Profile</h2>
+    <form v-else class="space-y-6 pb-24" @submit.prevent="onSubmit">
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class="space-y-6 lg:col-span-2">
+          <FormSection title="Profile" description="Shown in the hero section of the homepage." icon="lucide:user">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <FormField label="Name" required>
+                <input v-model="form.name" type="text" required placeholder="Jane Doe"
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              </FormField>
+              <FormField label="Nickname" required>
+                <input v-model="form.nickname" type="text" required placeholder="jane"
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              </FormField>
+            </div>
+            <FormField label="Tagline" hint="A one-line headline under your name.">
+              <input v-model="form.tagline" type="text" placeholder="Software engineer & builder of things"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            </FormField>
+            <FormField label="Bio" hint="A short paragraph about you.">
+              <textarea v-model="form.bio" rows="5" placeholder="I build web apps with Nuxt and TypeScript..."
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+            </FormField>
+          </FormSection>
+        </div>
 
-      <div>
-        <label class="mb-1 block text-sm font-medium">Name</label>
-        <input v-model="form.name" type="text"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none"
-          required>
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Nickname</label>
-        <input v-model="form.nickname" type="text"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none"
-          required>
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Tagline</label>
-        <input v-model="form.tagline" type="text"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none">
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Bio</label>
-        <textarea v-model="form.bio" rows="4"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none" />
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Avatar URL</label>
-        <input v-model="form.avatar" type="text"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none">
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Email</label>
-        <input v-model="form.email" type="email"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none">
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-medium">Start Date</label>
-        <input v-model="form.startDate" type="text"
-          class="w-full rounded-md border border-neutral-300 px-3 py-2 focus:border-neutral-500 focus:outline-none">
+        <div class="space-y-6">
+          <FormSection title="Avatar & Contact" icon="lucide:contact">
+            <FormField label="Avatar URL" hint="Square image works best.">
+              <input v-model="form.avatar" type="url" placeholder="https://..."
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            </FormField>
+            <div v-if="form.avatar || form.name"
+              class="flex items-center gap-3 rounded-md border border-border bg-muted/40 p-3">
+              <img v-if="form.avatar" :src="form.avatar" :alt="form.name" class="h-12 w-12 rounded-full object-cover">
+              <div v-else
+                class="flex h-12 w-12 items-center justify-center rounded-full bg-background text-sm font-medium text-muted-foreground">
+                {{ (form.name || '?').charAt(0).toUpperCase() }}
+              </div>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-foreground">
+                  {{ form.name || 'Unnamed' }}
+                </p>
+                <p class="truncate text-xs text-muted-foreground">
+                  {{ form.nickname ? `@${form.nickname}` : 'no nickname' }}
+                </p>
+              </div>
+            </div>
+            <FormField label="Email">
+              <input v-model="form.email" type="email" placeholder="jane@example.com"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            </FormField>
+            <FormField label="Start Date" hint="When you started, shown on the about page.">
+              <input v-model="form.startDate" type="text" placeholder="2020"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            </FormField>
+          </FormSection>
+        </div>
       </div>
 
-      <div class="border-t border-neutral-200 pt-4">
-        <div class="mb-2 flex items-center justify-between">
-          <h2 class="text-sm font-semibold uppercase tracking-wide text-neutral-500">Social Links</h2>
+      <FormSection title="Social Links" description="Ordered list of links in the hero." icon="lucide:link">
+        <template #action>
           <button type="button"
-            class="inline-flex items-center rounded-md bg-neutral-100 px-2 py-1 text-sm font-medium hover:bg-neutral-200"
+            class="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent"
             @click="addSocial">
-            <Icon name="lucide:plus" class="mr-1 h-4 w-4" />
-            Add
+            <Icon name="lucide:plus" class="h-3.5 w-3.5" />
+            Add link
           </button>
+        </template>
+
+        <div v-if="!socials.length"
+          class="rounded-md border border-dashed border-border bg-muted/30 px-3 py-8 text-center text-sm text-muted-foreground">
+          No social links yet. Click "Add link" to create one.
         </div>
 
-        <div v-if="!socials.length" class="rounded-md border border-dashed border-neutral-300 px-3 py-4 text-sm text-neutral-500">
-          No social links. Click "Add" to create one.
-        </div>
-
-        <div v-for="(social, index) in socials" :key="index" class="mb-3 rounded-md border border-neutral-200 p-3">
+        <div v-for="(social, index) in socials" :key="index" class="rounded-md border border-border bg-background p-3">
           <div class="mb-2 flex items-center justify-between">
-            <span class="text-xs font-medium text-neutral-500">#{{ index + 1 }}</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+              <Icon :name="social.icon || 'lucide:link'" class="h-3.5 w-3.5" />
+              Link #{{ index + 1 }}
+            </span>
             <div class="flex items-center gap-1">
               <button type="button"
-                class="inline-flex h-7 w-7 items-center justify-center rounded hover:bg-neutral-100 disabled:opacity-30"
+                class="inline-flex h-7 w-7 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent disabled:opacity-30 disabled:hover:bg-transparent"
                 :disabled="index === 0" title="Move up" @click="moveSocial(index, -1)">
                 <Icon name="lucide:chevron-up" class="h-4 w-4" />
               </button>
               <button type="button"
-                class="inline-flex h-7 w-7 items-center justify-center rounded hover:bg-neutral-100 disabled:opacity-30"
+                class="inline-flex h-7 w-7 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent disabled:opacity-30 disabled:hover:bg-transparent"
                 :disabled="index === socials.length - 1" title="Move down" @click="moveSocial(index, 1)">
                 <Icon name="lucide:chevron-down" class="h-4 w-4" />
               </button>
               <button type="button"
-                class="inline-flex h-7 w-7 items-center justify-center rounded text-red-600 hover:bg-red-50"
+                class="inline-flex h-7 w-7 items-center justify-center rounded text-red-600 transition-colors hover:bg-red-50"
                 title="Remove" @click="removeSocial(index)">
                 <Icon name="lucide:trash-2" class="h-4 w-4" />
               </button>
             </div>
           </div>
-          <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.5fr_1fr]">
             <input v-model="social.name" type="text" placeholder="Name (GitHub)"
-              class="rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none">
-            <input v-model="social.url" type="text" placeholder="URL"
-              class="rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none">
-            <input v-model="social.icon" type="text" placeholder="Icon (simple-icons:github)"
-              class="rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none">
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <input v-model="social.url" type="url" placeholder="https://github.com/you"
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <div class="relative">
+              <span
+                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-muted-foreground">
+                <Icon :name="social.icon || 'lucide:globe'" class="h-4 w-4" />
+              </span>
+              <input v-model="social.icon" type="text" placeholder="simple-icons:github"
+                class="flex h-10 w-full rounded-md border border-border bg-background py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            </div>
           </div>
         </div>
+      </FormSection>
+
+      <div v-if="error || saved" class="flex flex-wrap gap-2">
+        <p v-if="error"
+          class="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+          <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
+          {{ error }}
+        </p>
+        <p v-if="saved"
+          class="inline-flex items-center gap-2 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-600">
+          <Icon name="lucide:check-circle-2" class="h-4 w-4 shrink-0" />
+          Saved successfully.
+        </p>
       </div>
 
-      <p v-if="error" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-        {{ error }}
-      </p>
-      <p v-if="saved" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-600">
-        Saved successfully.
-      </p>
-
-      <div class="flex gap-2 pt-2">
+      <div
+        class="fixed bottom-0 right-0 z-30 flex items-center justify-end gap-3 border-t border-border bg-background/80 px-8 py-2 backdrop-blur"
+        :class="collapsed ? 'left-16' : 'left-64'">
+        <button type="button"
+          class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          @click="refresh()">
+          <Icon name="lucide:refresh-cw" class="h-4 w-4" />
+          Reset
+        </button>
         <button type="submit" :disabled="saving"
-          class="inline-flex items-center rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50">
-          {{ saving ? 'Saving...' : 'Save' }}
+          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+          <Icon v-if="saving" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
+          {{ saving ? 'Saving...' : 'Save Changes' }}
         </button>
       </div>
     </form>

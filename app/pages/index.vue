@@ -1,13 +1,7 @@
 <script setup lang="ts">
-const { profile, fetchProfile } = useProfile()
-const { allPosts, fetchPosts } = usePosts()
-const { allProjects, fetchProjects } = useProjects()
-
-onMounted(() => {
-    fetchProfile()
-    fetchPosts()
-    fetchProjects()
-})
+const { profile } = useProfile()
+const { allPosts } = usePosts()
+const { allProjects } = useProjects()
 
 const latestPosts = computed(() => allPosts.value.slice(0, 5))
 

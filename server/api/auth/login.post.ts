@@ -26,10 +26,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Invalid email or password' })
   }
 
-  if (user.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Access denied. Admin only.' })
-  }
-
   const token = generateToken({ userId: user.id, role: user.role })
 
   setCookie(event, 'auth_token', token, {

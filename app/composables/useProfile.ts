@@ -19,30 +19,31 @@ export interface ApiSocialLink {
   displayOrder: number
 }
 
-export function useProfile() {
-  const profile = ref<Profile>({
-    name: '',
-    nickname: '',
-    tagline: '',
-    bio: '',
-    avatar: '',
-    email: '',
-    startDate: '',
-    socials: [],
-  })
-  const loading = ref(false)
+interface ProfileResponse {
+  profile: ApiProfile | null
+  socials: ApiSocialLink[]
+}
 
-  async function fetchProfile() {
-    loading.value = true
-    try {
-      const data = await $fetch<{ profile: ApiProfile | null; socials: ApiSocialLink[] }>('/api/profile')
+const EMPTY_PROFILE: Profile = {
+  name: '',
+  nickname: '',
+  tagline: '',
+  bio: '',
+  avatar: '',
+  email: '',
+  startDate: '',
+  socials: [],
+}
+
+export function useProfile() {
+  const { data: profile, pending: loading, error, refresh: fetchProfile } = useAsyncData(
+    'profile',
+    async () => {
+      const data = await $fetch<ProfileResponse>('/api/profile')
 
       const apiProfile = data.profile
 
-      if (!apiProfile) {
-        profile.value = null
-        return
-      }
+      if (!apiProfile) return EMPTY_PROFILE
 
       const socials: SocialLink[] = data.socials.map((link) => ({
         name: link.name,
@@ -50,7 +51,7 @@ export function useProfile() {
         icon: link.icon,
       }))
 
-      profile.value = {
+      return {
         name: apiProfile.name,
         nickname: apiProfile.nickname,
         tagline: apiProfile.tagline || '',
@@ -60,15 +61,14 @@ export function useProfile() {
         startDate: apiProfile.startDate || '',
         socials,
       }
-    }
-    finally {
-      loading.value = false
-    }
-  }
+    },
+    { default: () => ({ ...EMPTY_PROFILE }) },
+  )
 
   return {
     profile,
     loading,
+    error,
     fetchProfile,
   }
 }

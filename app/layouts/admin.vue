@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const collapsed = ref(false)
+const collapsed = useState<boolean>('admin-sidebar-collapsed', () => false)
 const route = useRoute()
 
 const links = [

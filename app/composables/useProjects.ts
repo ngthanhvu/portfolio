@@ -21,23 +21,16 @@ function mapProject(project: ApiProject): Project {
 }
 
 export function useProjects() {
-  const allProjects = ref<Project[]>([])
-  const loading = ref(false)
-
-  async function fetchProjects() {
-    loading.value = true
-    try {
-      const { data } = await $fetch<{ data: ApiProject[] }>('/api/projects')
-      allProjects.value = data.map(mapProject)
-    }
-    finally {
-      loading.value = false
-    }
-  }
+  const { data: allProjects, pending: loading, error, refresh: fetchProjects } = useAsyncData(
+    'projects',
+    () => $fetch<{ data: ApiProject[] }>('/api/projects').then(r => r.data.map(mapProject)),
+    { default: () => [] as Project[] },
+  )
 
   return {
     allProjects,
     loading,
+    error,
     fetchProjects,
   }
 }

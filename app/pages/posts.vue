@@ -1,9 +1,5 @@
 <script setup lang="ts">
-const { allPosts, fetchPosts } = usePosts()
-
-onMounted(() => {
-  fetchPosts()
-})
+const { allPosts } = usePosts()
 
 const searchQuery = ref('')
 const pageSize = 6
@@ -70,12 +66,8 @@ useHead({
       </h1>
 
       <div class="relative mb-6">
-        <input
-          v-model="searchQuery"
-          type="search"
-          placeholder="Search posts by title or keyword..."
-          class="w-full rounded-xl border border-dashed border-neutral-300 bg-white/70 px-4 py-3 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-colors focus:border-neutral-500"
-        />
+        <input v-model="searchQuery" type="search" placeholder="Search posts by title or keyword..."
+          class="w-full rounded-xl border border-dashed border-neutral-300 bg-white/70 px-4 py-3 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-colors focus:border-neutral-500" />
         <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-neutral-400">
           <Icon name="lucide:search" class="h-4 w-4" />
         </div>
@@ -89,18 +81,11 @@ useHead({
         <PostListItem v-for="post in displayedPosts" :key="post.id" :post="post" />
       </div>
 
-      <div
-        v-if="filteredPosts.length === 0"
-        class="py-12 text-center text-sm text-neutral-500"
-      >
+      <div v-if="filteredPosts.length === 0" class="py-12 text-center text-sm text-neutral-500">
         No posts found matching "{{ searchQuery }}".
       </div>
 
-      <div
-        v-show="hasMore"
-        ref="loadMoreRef"
-        class="py-8 text-center text-sm text-neutral-500"
-      >
+      <div v-show="hasMore" ref="loadMoreRef" class="py-8 text-center text-sm text-neutral-500">
         Loading more posts...
       </div>
     </div>
