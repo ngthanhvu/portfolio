@@ -96,7 +96,7 @@ async function onSubmit() {
                   v-for="opt in [{ v: 'author', l: 'Author', i: 'lucide:user' }, { v: 'admin', l: 'Admin', i: 'lucide:crown' }]"
                   :key="opt.v"
                   class="flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm transition-colors"
-                  :class="form.role === opt.v ? 'border-foreground bg-muted text-foreground' : 'border-border text-muted-foreground hover:bg-accent'">
+                  :class="form.role === opt.v ? 'border-muted-foreground bg-muted text-foreground' : 'border-border text-muted-foreground hover:bg-accent'">
                   <input v-model="form.role" type="radio" :value="opt.v"
                     class="h-4 w-4 border-border text-foreground focus-visible:ring-ring">
                   <Icon :name="opt.i" class="h-4 w-4" />

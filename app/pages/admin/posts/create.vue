@@ -28,6 +28,10 @@ const error = ref('')
 const submitting = ref(false)
 
 async function onSubmit() {
+  if (!form.content || form.content.replace(/<[^>]*>/g, '').trim() === '') {
+    error.value = 'Content is required'
+    return
+  }
   submitting.value = true
   try {
     await $fetch('/api/posts', {
@@ -83,9 +87,8 @@ async function onSubmit() {
                 placeholder="A quick walkthrough of the stack and decisions behind my portfolio."
                 class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
             </FormField>
-            <FormField label="Content (HTML)" required hint="Raw HTML markup for the article body.">
-              <textarea v-model="form.content" rows="12" required
-                class="w-full rounded-md border border-border bg-background px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+            <FormField label="Content" required hint="Write your post with the rich text editor.">
+              <RichEditor v-model="form.content" />
             </FormField>
           </FormSection>
         </div>

@@ -8,10 +8,18 @@ import { generateToken } from '../../utils/auth'
 const bodySchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
+  'cf-turnstile-response': z.string().optional(),
 })
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse)
+
+  if (body['cf-turnstile-response']) {
+    const result = await verifyTurnstileToken(body['cf-turnstile-response'])
+    if (!result.success) {
+      throw createError({ statusCode: 400, statusMessage: 'Captcha verification failed' })
+    }
+  }
 
   const user = await db.query.users.findFirst({
     where: eq(users.email, body.email),

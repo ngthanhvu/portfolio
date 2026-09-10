@@ -75,6 +75,9 @@ async function onSubmit() {
     })
     saved.value = true
     await refresh()
+    // Invalidate the public profile cache so the new avatar/name is reflected immediately
+    // across the site (header, dashboard, homepage hero, etc.).
+    refreshNuxtData('profile')
     setTimeout(() => { saved.value = false }, 2500)
   }
   catch (err: any) {

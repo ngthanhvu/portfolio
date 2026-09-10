@@ -1,7 +1,8 @@
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../utils/db'
-import { profiles, socialLinks } from '../../db/schema'
+import { profiles, socialLinks, users, comments } from '../../db/schema'
+import { getTokenFromEvent, getUserFromToken } from '../../utils/auth'
 
 const bodySchema = z.object({
   name: z.string().min(1),
@@ -19,6 +20,13 @@ const bodySchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
+  const token = getTokenFromEvent(event)
+  const user = token ? await getUserFromToken(token) : null
+
+  if (!user || user.role !== 'admin') {
+    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+  }
+
   const body = await readValidatedBody(event, bodySchema.parse)
 
   const existing = await db.query.profiles.findFirst()
@@ -61,6 +69,24 @@ export default defineEventHandler(async (event) => {
       })),
     )
   }
+
+  // Sync current admin's user record so future comments use the new name/avatar.
+  await db
+    .update(users)
+    .set({
+      name: body.name,
+      avatar: body.avatar,
+    })
+    .where(eq(users.id, user.id))
+
+  // Update all existing comments authored by this user to reflect the new avatar/name.
+  await db
+    .update(comments)
+    .set({
+      authorName: body.name,
+      authorAvatar: body.avatar,
+    })
+    .where(eq(comments.userId, user.id))
 
   return { success: true }
 })
