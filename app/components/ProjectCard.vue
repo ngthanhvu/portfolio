@@ -13,7 +13,7 @@ defineProps<Props>()
     :href="project.url"
     target="_blank"
     rel="noopener noreferrer"
-    class="group relative flex flex-col rounded-2xl p-3 sm:p-7"
+    class="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl p-3 sm:p-7"
   >
     <!-- Background layers for double border hover effect -->
     <span class="absolute inset-0 z-20 rounded-2xl border border-dashed border-transparent bg-transparent transition-all duration-300 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:border-neutral-300 group-hover:bg-white" />
@@ -29,11 +29,11 @@ defineProps<Props>()
         />
       </span>
       <span class="mt-3 block w-full px-1 sm:mt-5">
-        <span class="mb-1 flex items-center gap-1 text-base font-semibold tracking-tight text-neutral-900">
-          <span>{{ project.name }}</span>
+        <span class="mb-1 flex min-w-0 items-center gap-1 text-base font-semibold tracking-tight text-neutral-900">
+          <span class="truncate">{{ project.name }}</span>
           <Icon
             name="lucide:arrow-up-right"
-            class="h-3 w-3 -rotate-45 text-neutral-400 transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:rotate-0"
+            class="h-3 w-3 flex-shrink-0 -rotate-45 text-neutral-400 transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:rotate-0"
           />
         </span>
         <span class="block truncate text-sm text-neutral-600">

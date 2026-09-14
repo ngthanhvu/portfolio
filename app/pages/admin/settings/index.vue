@@ -166,9 +166,9 @@ async function onSubmit() {
               <input v-model="form.email" type="email" placeholder="jane@example.com"
                 class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             </FormField>
-            <FormField label="Start Date" hint="When you started, shown on the about page.">
-              <input v-model="form.startDate" type="text" placeholder="2020"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <FormField label="Start Date" hint="When you started, used to calculate running days.">
+              <input v-model="form.startDate" type="date"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             </FormField>
           </FormSection>
         </div>

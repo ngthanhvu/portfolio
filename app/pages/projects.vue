@@ -23,7 +23,7 @@ useHead({
     </div>
 
     <section class="container mx-auto px-4 py-12 md:px-6 md:py-16">
-      <div class="mx-auto max-w-6xl">
+      <div class="mx-auto min-w-0 max-w-6xl">
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <ProjectCard v-for="project in allProjects" :key="project.id" :project="project" />
         </div>

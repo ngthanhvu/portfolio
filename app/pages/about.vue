@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
 
     <main class="relative z-30 mx-auto mt-10 max-w-4xl bg-white pb-1 text-neutral-900 md:rounded-t-md">
       <div
-        class="relative flex flex-col justify-stretch border-t border-b-0 border-neutral-200 px-5 pt-6 md:rounded-t-2xl md:border-l md:border-r md:pt-20">
+        class="relative flex flex-col justify-stretch px-5 pt-6 md:rounded-t-2xl md:pt-20">
         <!-- Side gradient lines -->
         <div
           class="absolute top-0 left-0 mt-1 hidden h-full w-px -translate-x-px bg-linear-to-b from-transparent to-white md:block" />

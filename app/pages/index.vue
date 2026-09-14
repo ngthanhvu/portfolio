@@ -58,8 +58,8 @@ useHead({
                 </div>
 
                 <div
-                    class="relative mt-10 w-full md:mt-0 md:flex md:w-1/2 md:translate-y-4 md:justify-end xl:translate-y-0">
-                    <div class="relative z-30 max-w-xs md:max-w-sm">
+                    class="relative mt-8 flex w-full justify-center md:mt-0 md:w-1/2 md:translate-y-4 md:justify-end xl:translate-y-0">
+                    <div class="relative z-30 w-48 max-w-48 sm:w-56 sm:max-w-56 md:w-auto md:max-w-sm">
                         <img :src="profile.avatar" :alt="profile.name"
                             class="aspect-square w-full rounded-3xl object-cover" />
                     </div>

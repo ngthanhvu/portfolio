@@ -20,6 +20,8 @@ yarn install
 bun install
 ```
 
+nhưng mà càng kéo xuống dưới càng đậm hơn là sao? đáng lẻ nó phải nhạt hơn hcuws?
+
 ## Development Server
 
 Start the development server on `http://localhost:3000`:

@@ -7,6 +7,7 @@ import {
   timestamp,
   varchar,
   index,
+  longtext,
 } from 'drizzle-orm/mysql-core'
 
 // -------------------------------
@@ -33,7 +34,7 @@ export const posts = mysqlTable('posts', {
   slug: varchar('slug', { length: 255 }).notNull().unique(),
   title: varchar('title', { length: 255 }).notNull(),
   excerpt: text('excerpt').notNull(),
-  content: text('content').notNull(),
+  content: longtext('content').notNull(),
   coverImage: varchar('cover_image', { length: 512 }),
   category: varchar('category', { length: 100 }).notNull(),
   authorId: int('author_id').references(() => users.id, { onDelete: 'set null' }),

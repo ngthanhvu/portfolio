@@ -212,25 +212,17 @@ onBeforeUnmount(() => {
   <div class="relative min-h-screen">
     <GridBackground class="h-full w-full" />
 
-    <main class="relative z-30 mx-auto mt-10 max-w-4xl bg-white pb-1 text-neutral-900 md:rounded-t-md">
-      <div
-        class="relative flex flex-col justify-stretch border-t border-b-0 border-neutral-200 px-5 pt-6 md:rounded-t-2xl md:border-l md:border-r md:pt-20">
-        <!-- Side gradient lines -->
-        <div
-          class="absolute top-0 left-0 mt-1 hidden h-full w-px -translate-x-px bg-linear-to-b from-transparent to-white md:block" />
-        <div
-          class="absolute top-0 right-0 mt-1 hidden h-full w-px translate-x-px bg-linear-to-b from-transparent to-white md:block" />
-        <!-- Header -->
-        <div class="mx-auto w-full max-w-2xl px-5 lg:px-0">
-          <h1 class="text-3xl font-bold md:mb-8 md:text-4xl lg:text-5xl">
-            {{ post?.title }}
-          </h1>
-          <div class="mb-6 font-semibold text-neutral-500">
-            {{ post?.publishedAt }}
-            ·
-            <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
-              {{ post?.category }}
-            </NuxtLink>
+    <main class="relative z-30 mx-auto mt-10 max-w-4xl bg-white text-neutral-900 md:rounded-t-md">
+      <div class="mx-auto w-full max-w-2xl px-5 lg:px-0">
+        <h1 class="text-3xl font-bold md:mb-8 md:text-4xl lg:text-5xl">
+          {{ post?.title }}
+        </h1>
+        <div class="mb-6 font-semibold text-neutral-500">
+          {{ post?.publishedAt }}
+          ·
+          <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
+            {{ post?.category }}
+          </NuxtLink>
             ·
             <span class="inline-flex flex-wrap gap-1">
               <NuxtLink v-for="tag in post?.tags" :key="tag" to="/"
@@ -319,7 +311,6 @@ onBeforeUnmount(() => {
         <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
           <CommentSection v-if="post" :post-id="Number(post.id)" />
         </section>
-      </div>
     </main>
   </div>
 </template>
@@ -394,6 +385,61 @@ onBeforeUnmount(() => {
 
 .article-content :deep(strong) {
   font-weight: 700;
+}
+
+.article-content :deep(pre) {
+  background: var(--color-muted);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0 0 1rem;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.875rem;
+}
+
+.article-content :deep(code) {
+  background: var(--color-muted);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.article-content :deep(pre code) {
+  background: transparent;
+  padding: 0;
+}
+
+.article-content :deep(blockquote) {
+  border-left: 3px solid var(--color-border);
+  padding-left: 1rem;
+  color: var(--color-muted-foreground);
+  margin: 0 0 1rem;
+  font-style: italic;
+}
+
+.article-content :deep(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.article-content :deep(th),
+.article-content :deep(td) {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.article-content :deep(th) {
+  background: var(--color-muted);
+  font-weight: 600;
+}
+
+.article-content :deep(hr) {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
 }
 
 .toc-line.is-active {
