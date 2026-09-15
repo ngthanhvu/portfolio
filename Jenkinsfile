@@ -25,21 +25,68 @@ pipeline {
             }
         }
 
-        stage('Prepare .env') {
-            steps {
-                sh 'rm -f .env'
-                withCredentials([file(credentialsId: 'portfolio-dotenv', variable: 'ENV_FILE')]) {
-                    sh 'cp "$ENV_FILE" .env'
-                }
-                echo 'Đã copy .env từ Jenkins Credentials.'
-            }
+stage('Prepare .env') {
+    steps {
+        script {
+            env.DEPLOY_ENV = params.PORTFOLIO_ENV ?: 'prod'
+        }
+
+        echo "Prepare .env cho môi trường: ${DEPLOY_ENV}"
+
+        sh '''
+            set -eux
+
+            echo "==> User:"
+            whoami
+
+            echo "==> Workspace:"
+            pwd
+
+            echo "==> Workspace permissions:"
+            ls -ld .
+
+            echo "==> Xóa .env cũ:"
+            rm -f .env
+        '''
+
+        withCredentials([
+            file(
+                credentialsId: 'portfolio_env',
+                variable: 'ENV_FILE'
+            )
+        ]) {
+            sh '''
+                set -eu
+
+                echo "==> Jenkins credential đã được bind"
+
+                if [ ! -f "$ENV_FILE" ]; then
+                    echo "ERROR: ENV_FILE không tồn tại"
+                    exit 1
+                fi
+
+                echo "==> Copy credential -> .env"
+                cp "$ENV_FILE" .env
+                chmod 600 .env
+
+                if [ ! -s .env ]; then
+                    echo "ERROR: .env không tồn tại hoặc rỗng"
+                    exit 1
+                fi
+
+                echo "==> .env OK"
+                ls -l .env
+            '''
+        }
+    }
+}
         }
 
         stage('Build & Deploy Docker Compose') {
             steps {
                 script {
                     def deployEnv = params.PORTFOLIO_ENV ?: 'prod'
-                    env.PORTFOLIO_ENV = deployEnv
+                    env.DEPLOY_ENV = deployEnv
 
                     echo "Môi trường deploy: ${deployEnv}"
 
