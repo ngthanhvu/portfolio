@@ -82,20 +82,21 @@ docker compose \
 
 
 # ==========================================
-# WAIT & DB MIGRATE (chỉ prod)
+# WAIT & DB MIGRATE
 # ==========================================
 
-if [ "$ENV_NAME" = "prod" ]; then
-    echo "==> Đợi containers sẵn sàng ..."
-    sleep 5
+echo "==> Đợi containers sẵn sàng ..."
+sleep 5
 
-    echo "==> Chạy DB migrate ..."
-    docker compose \
-        -f "$COMPOSE_FILE" \
-        exec -T portfolio \
-        node .output/server/index.mjs --db-migrate 2>/dev/null \
-        || echo "⚠️  DB migrate skipped (manual step or already up-to-date)"
-fi
+echo "==> Chạy DB migrate (drizzle-kit) ..."
+docker run --rm \
+    -v "$PWD:/app" \
+    -w /app \
+    --network host \
+    --env-file .env \
+    node:22-alpine \
+    sh -c "npm ci && npx drizzle-kit migrate" 2>/dev/null \
+    || echo "⚠️  DB migrate skipped (manual step or already up-to-date)"
 
 
 # ==========================================
