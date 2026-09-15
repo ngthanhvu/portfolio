@@ -107,7 +107,7 @@ if [ -n "${NETWORK_NAME:-}" ]; then
         --network "$NETWORK_NAME" \
         --env-file .env \
         node:22-alpine \
-        sh -c "npm ci && npx drizzle-kit migrate" \
+        sh -c "npm ci && npx drizzle-kit push && npx tsx server/db/seed.ts" \
         || echo "⚠️  DB migrate thất bại — kiểm tra log phía trên"
 else
     echo "⚠️  Không tìm thấy network — bỏ qua migrate"
