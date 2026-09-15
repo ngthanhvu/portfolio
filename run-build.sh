@@ -89,14 +89,25 @@ echo "==> Đợi containers sẵn sàng ..."
 sleep 5
 
 echo "==> Chạy DB migrate (drizzle-kit) ..."
-docker run --rm \
-    -v "$PWD:/app" \
-    -w /app \
-    --network host \
-    --env-file .env \
-    node:22-alpine \
-    sh -c "npm ci && npx drizzle-kit migrate" 2>/dev/null \
-    || echo "⚠️  DB migrate skipped (manual step or already up-to-date)"
+
+# Lấy tên network từ container đang chạy để migrate container join đúng network
+CONTAINER_NAME=$(docker compose -f "$COMPOSE_FILE" ps -q portfolio 2>/dev/null | head -1)
+if [ -n "$CONTAINER_NAME" ]; then
+    NETWORK_NAME=$(docker inspect "$CONTAINER_NAME" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' 2>/dev/null | head -1)
+fi
+
+if [ -n "${NETWORK_NAME:-}" ]; then
+    docker run --rm \
+        -v "$PWD:/app" \
+        -w /app \
+        --network "$NETWORK_NAME" \
+        --env-file .env \
+        node:22-alpine \
+        sh -c "npm ci && npx drizzle-kit migrate" \
+        || echo "⚠️  DB migrate thất bại — kiểm tra log phía trên"
+else
+    echo "⚠️  Không tìm thấy network — bỏ qua migrate"
+fi
 
 
 # ==========================================
