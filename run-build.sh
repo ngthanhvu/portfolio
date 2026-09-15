@@ -97,6 +97,10 @@ if [ -n "$CONTAINER_NAME" ]; then
 fi
 
 if [ -n "${NETWORK_NAME:-}" ]; then
+    # Thay localhost/127.0.0.1 -> db để migrate container connect được MySQL qua compose network
+    echo "==> Sửa DATABASE_URL hostname -> db ..."
+    sed -i 's/@localhost:/@db:/g; s/@127\.0\.0\.1:/@db:/g' .env
+
     docker run --rm \
         -v "$PWD:/app" \
         -w /app \
