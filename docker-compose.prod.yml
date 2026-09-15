@@ -3,31 +3,62 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+
     container_name: portfolio-prod
+
+    # Chỉ expose port 3000 trên localhost của VPS.
+    # Internet KHÔNG truy cập trực tiếp VPS_IP:3000 được.
     ports:
       - "127.0.0.1:3000:3000"
+
     environment:
-      - NODE_ENV=production
-      - HOST=127.0.0.1
-      - PORT=3000
-      - DATABASE_URL=mysql://portfolio:portfolio@db:3306/portfolio
+      NODE_ENV: production
+
+      # Nuxt/Nitro phải listen toàn bộ interface BÊN TRONG container
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 3000
+
+      DATABASE_URL: mysql://portfolio:portfolio@db:3306/portfolio
+
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
     restart: unless-stopped
 
   db:
     image: mysql:8.0
+
     container_name: portfolio-db
+
     restart: unless-stopped
+
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: portfolio
       MYSQL_USER: portfolio
       MYSQL_PASSWORD: portfolio
-    ports:
-      - "3306:3306"
+
+    # Không publish 3306 ra VPS.
+    # portfolio truy cập trực tiếp thông qua db:3306
     volumes:
       - db_data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-proot"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
 volumes:
   db_data:

@@ -1,37 +1,39 @@
-# Dockerfile cho môi trường production của Nuxt 3/4
-# Build multi-stage để giảm kích thước image cuối cùng
-
-# -------------------------------
-# Giai đoạn 1: Build ứng dụng
-# -------------------------------
+# ==========================================
+# Stage 1: Build Nuxt
+# ==========================================
 FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Copy package trước để tận dụng Docker layer cache
 COPY package*.json ./
+
+# Cài dependencies chính xác theo package-lock.json
 RUN npm ci
 
+# Copy source code
 COPY . .
 
-# Build ứng dụng Nuxt
+# Build Nuxt production
 RUN npm run build
 
-# -------------------------------
-# Giai đoạn 2: Runtime image
-# -------------------------------
+
+# ==========================================
+# Stage 2: Production Runtime
+# ==========================================
 FROM node:22-alpine AS runtime
 
 WORKDIR /app
 
-# Copy chỉ output build từ stage trước
-COPY --from=builder /app/.output ./.output
-
-# Không cần devDependencies nên image rất nhẹ
-ENV HOST=127.0.0.1
-ENV PORT=3000
 ENV NODE_ENV=production
+
+# Nitro listen bên trong container
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3000
+
+# Chỉ copy output cần thiết
+COPY --from=builder /app/.output ./.output
 
 EXPOSE 3000
 
-# Chạy ứng dụng production
 CMD ["node", ".output/server/index.mjs"]
