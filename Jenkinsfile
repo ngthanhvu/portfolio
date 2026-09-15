@@ -25,61 +25,56 @@ pipeline {
             }
         }
 
-stage('Prepare .env') {
-    steps {
-        script {
-            env.DEPLOY_ENV = params.PORTFOLIO_ENV ?: 'prod'
-        }
+		stage('Prepare .env') {
+            steps {
+                script {
+                    env.DEPLOY_ENV = params.PORTFOLIO_ENV ?: 'prod'
+                }
 
-        echo "Prepare .env cho môi trường: ${DEPLOY_ENV}"
+                echo "Prepare .env cho môi trường: ${DEPLOY_ENV}"
 
-        sh '''
-            set -eux
+                sh '''#!/bin/bash
+                    set -eu
 
-            echo "==> User:"
-            whoami
+                    echo "==> User: $(whoami)"
+                    echo "==> Workspace: $(pwd)"
+                    echo "==> Workspace permissions:"
+                    ls -ld .
 
-            echo "==> Workspace:"
-            pwd
+                    echo "==> Xóa .env cũ:"
+                    rm -f .env
+                '''
 
-            echo "==> Workspace permissions:"
-            ls -ld .
+                withCredentials([
+                    file(
+                        credentialsId: 'portfolio_env',
+                        variable: 'ENV_FILE'
+                    )
+                ]) {
+                    sh '''#!/bin/bash
+                        set -eu
 
-            echo "==> Xóa .env cũ:"
-            rm -f .env
-        '''
+                        echo "==> Jenkins credential đã được bind"
 
-        withCredentials([
-            file(
-                credentialsId: 'portfolio_env',
-                variable: 'ENV_FILE'
-            )
-        ]) {
-            sh '''
-                set -eu
+                        if [ ! -f "$ENV_FILE" ]; then
+                            echo "ERROR: ENV_FILE không tồn tại"
+                            exit 1
+                        fi
 
-                echo "==> Jenkins credential đã được bind"
+                        echo "==> Copy credential -> .env"
+                        cp "$ENV_FILE" .env
+                        chmod 600 .env
 
-                if [ ! -f "$ENV_FILE" ]; then
-                    echo "ERROR: ENV_FILE không tồn tại"
-                    exit 1
-                fi
+                        if [ ! -s .env ]; then
+                            echo "ERROR: .env không tồn tại hoặc rỗng"
+                            exit 1
+                        fi
 
-                echo "==> Copy credential -> .env"
-                cp "$ENV_FILE" .env
-                chmod 600 .env
-
-                if [ ! -s .env ]; then
-                    echo "ERROR: .env không tồn tại hoặc rỗng"
-                    exit 1
-                fi
-
-                echo "==> .env OK"
-                ls -l .env
-            '''
-        }
-    }
-}
+                        echo "==> .env OK"
+                        ls -l .env
+                    '''
+                }
+            }
         }
 
         stage('Build & Deploy Docker Compose') {
