@@ -58,33 +58,27 @@ async function deleteSelected() {
           Manage the projects shown on the homepage.
         </p>
       </div>
-      <NuxtLink
-        to="/admin/projects/create"
-        class="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90"
-      >
+      <NuxtLink to="/admin/projects/create" title="Create project"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90">
         <Icon name="lucide:plus" class="h-4 w-4" />
-        Create
       </NuxtLink>
     </header>
 
-    <div
-      v-if="selected.size > 0"
-      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2"
-    >
+    <div v-if="selected.size > 0"
+      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2">
       <Icon name="lucide:check-square" class="h-4 w-4 text-red-600" />
       <span class="text-sm font-medium text-red-700">{{ selected.size }} selected</span>
       <button
-        class="inline-flex items-center gap-1.5 rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-700 transition-colors hover:bg-red-200"
-        @click="deleteSelected"
-      >
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 transition-colors hover:bg-red-200"
+        title="Delete selected" @click="deleteSelected">
         <Icon name="lucide:trash-2" class="h-4 w-4" />
-        Delete
       </button>
     </div>
 
     <div class="overflow-x-auto rounded-lg border border-border bg-card">
-      <table class="w-full min-w-[640px] text-sm">
-        <thead class="border-b border-border bg-muted/40 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+      <table class="w-full min-w-160 text-sm">
+        <thead
+          class="border-b border-border bg-muted/40 text-xs font-medium uppercase tracking-wider text-muted-foreground">
           <tr>
             <th class="w-10 px-4 py-3 text-center">
               <input v-model="allSelected" type="checkbox" class="h-4 w-4 rounded border-border">
@@ -92,10 +86,10 @@ async function deleteSelected() {
             <th class="w-16 px-4 py-3 text-center">
               STT
             </th>
-            <th class="px-4 py-3 text-left">
+            <th class="px-4 py-3 text-center">
               Name
             </th>
-            <th class="px-4 py-3 text-left">
+            <th class="px-4 py-3 text-center">
               URL
             </th>
             <th class="w-24 px-4 py-3 text-center">
@@ -109,45 +103,34 @@ async function deleteSelected() {
               No projects found.
             </td>
           </tr>
-          <tr
-            v-for="(project, index) in paginated"
-            :key="project.id"
-            class="transition-colors hover:bg-muted/30"
-          >
+          <tr v-for="(project, index) in paginated" :key="project.id" class="transition-colors hover:bg-muted/30">
             <td class="px-4 py-3 text-center">
-              <input :checked="selected.has(project.id)" type="checkbox" class="h-4 w-4 rounded border-border" @change="toggleRow(project.id)">
+              <input :checked="selected.has(project.id)" type="checkbox" class="h-4 w-4 rounded border-border"
+                @change="toggleRow(project.id)">
             </td>
             <td class="px-4 py-3 text-center text-muted-foreground">
               {{ (page - 1) * pageSize + index + 1 }}
             </td>
-            <td class="px-4 py-3 text-left font-medium text-foreground">
+            <td class="px-4 py-3 text-center font-medium text-foreground">
               {{ project.name }}
             </td>
-            <td class="px-4 py-3 text-left">
-              <a
-                :href="project.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <span class="max-w-[280px] truncate">{{ project.url }}</span>
+            <td class="px-4 py-3 text-center">
+              <a :href="project.url" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-1 text-muted-foreground transition-colors hover:text-foreground">
+                <span class="max-w-70 truncate">{{ project.url }}</span>
                 <Icon name="lucide:external-link" class="h-3.5 w-3.5 shrink-0" />
               </a>
             </td>
             <td class="px-4 py-3">
               <div class="flex items-center justify-center gap-1">
-                <NuxtLink
-                  :to="`/admin/projects/${project.id}`"
+                <NuxtLink :to="`/admin/projects/${project.id}`"
                   class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                  title="Edit"
-                >
+                  title="Edit">
                   <Icon name="lucide:pencil" class="h-4 w-4" />
                 </NuxtLink>
                 <button
                   class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
-                  title="Delete"
-                  @click="deleteProject(project.id)"
-                >
+                  title="Delete" @click="deleteProject(project.id)">
                   <Icon name="lucide:trash-2" class="h-4 w-4" />
                 </button>
               </div>
@@ -157,12 +140,7 @@ async function deleteSelected() {
       </table>
     </div>
 
-    <Pagination
-      :page="page"
-      :page-count="pageCount"
-      :total="projects.length"
-      :page-size="pageSize"
-      @update:page="goTo"
-    />
+    <Pagination :page="page" :page-count="pageCount" :total="projects.length" :page-size="pageSize"
+      @update:page="goTo" />
   </div>
 </template>

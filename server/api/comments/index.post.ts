@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { eq } from 'drizzle-orm'
 import { db } from '../../utils/db'
 import { comments } from '../../db/schema'
 import { getTokenFromEvent, getUserFromToken } from '../../utils/auth'
@@ -18,6 +19,25 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readValidatedBody(event, bodySchema.parse)
+
+  // Only admins can reply, and replies can only be one level deep.
+  if (body.parentId) {
+    if (user.role !== 'admin') {
+      throw createError({ statusCode: 403, statusMessage: 'Only admins can reply' })
+    }
+
+    const parent = await db.query.comments.findFirst({
+      where: eq(comments.id, body.parentId),
+    })
+
+    if (!parent) {
+      throw createError({ statusCode: 404, statusMessage: 'Parent comment not found' })
+    }
+
+    if (parent.parentId) {
+      throw createError({ statusCode: 400, statusMessage: 'Only one level of replies is allowed' })
+    }
+  }
 
   const [inserted] = await db
     .insert(comments)

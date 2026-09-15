@@ -95,6 +95,11 @@ useHead({
                 <PostListItem v-for="post in latestPosts" :key="post.id" :post="post" />
             </div>
 
+            <div v-if="latestPosts.length === 0"
+                class="flex flex-col items-center py-8 text-center text-sm text-neutral-500">
+                <span>No posts yet. Check back later!</span>
+            </div>
+
             <div class="flex items-center justify-center py-5">
                 <NuxtLink to="/posts"
                     class="inline-flex rounded-full border border-neutral-900 bg-neutral-900 px-4 py-2 text-sm font-semibold text-neutral-100 transition-all duration-300 ease-out hover:bg-white hover:text-neutral-900">
@@ -113,6 +118,11 @@ useHead({
 
             <div class="mt-7 grid grid-cols-1 gap-7 sm:grid-cols-2 md:grid-cols-3">
                 <ProjectCard v-for="project in allProjects" :key="project.id" :project="project" />
+            </div>
+
+            <div v-if="allProjects.length === 0"
+                class="flex flex-col items-center py-8 text-center text-sm text-neutral-500">
+                <span>No projects yet. Check back later!</span>
             </div>
 
             <div class="flex items-center justify-center py-5">

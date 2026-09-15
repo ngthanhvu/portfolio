@@ -60,24 +60,21 @@ async function deleteSelected() {
       </div>
     </header>
 
-    <div
-      v-if="selected.size > 0"
-      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2"
-    >
+    <div v-if="selected.size > 0"
+      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2">
       <Icon name="lucide:check-square" class="h-4 w-4 text-red-600" />
       <span class="text-sm font-medium text-red-700">{{ selected.size }} selected</span>
       <button
-        class="inline-flex items-center gap-1.5 rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-700 transition-colors hover:bg-red-200"
-        @click="deleteSelected"
-      >
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 transition-colors hover:bg-red-200"
+        title="Delete selected" @click="deleteSelected">
         <Icon name="lucide:trash-2" class="h-4 w-4" />
-        Delete
       </button>
     </div>
 
     <div class="overflow-x-auto rounded-lg border border-border bg-card">
-      <table class="w-full min-w-[720px] text-sm">
-        <thead class="border-b border-border bg-muted/40 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+      <table class="w-full min-w-180 text-sm">
+        <thead
+          class="border-b border-border bg-muted/40 text-xs font-medium uppercase tracking-wider text-muted-foreground">
           <tr>
             <th class="w-10 px-4 py-3 text-center">
               <input v-model="allSelected" type="checkbox" class="h-4 w-4 rounded border-border">
@@ -85,16 +82,16 @@ async function deleteSelected() {
             <th class="w-16 px-4 py-3 text-center">
               STT
             </th>
-            <th class="px-4 py-3 text-left">
+            <th class="px-4 py-3 text-center">
               Author
             </th>
-            <th class="px-4 py-3 text-left">
+            <th class="px-4 py-3 text-center">
               Content
             </th>
             <th class="w-24 px-4 py-3 text-center">
               Post ID
             </th>
-            <th class="px-4 py-3 text-left">
+            <th class="px-4 py-3 text-center">
               Status
             </th>
             <th class="w-24 px-4 py-3 text-center">
@@ -108,34 +105,29 @@ async function deleteSelected() {
               No comments found.
             </td>
           </tr>
-          <tr
-            v-for="(comment, index) in paginated"
-            :key="comment.id"
-            class="transition-colors hover:bg-muted/30"
-          >
+          <tr v-for="(comment, index) in paginated" :key="comment.id" class="transition-colors hover:bg-muted/30">
             <td class="px-4 py-3 text-center">
-              <input :checked="selected.has(comment.id)" type="checkbox" class="h-4 w-4 rounded border-border" @change="toggleRow(comment.id)">
+              <input :checked="selected.has(comment.id)" type="checkbox" class="h-4 w-4 rounded border-border"
+                @change="toggleRow(comment.id)">
             </td>
             <td class="px-4 py-3 text-center text-muted-foreground">
               {{ (page - 1) * pageSize + index + 1 }}
             </td>
-            <td class="px-4 py-3 text-left font-medium text-foreground">
+            <td class="px-4 py-3 text-center font-medium text-foreground">
               {{ comment.authorName }}
             </td>
-            <td class="max-w-xs px-4 py-3 text-left text-muted-foreground">
+            <td class="max-w-xs px-4 py-3 text-center text-muted-foreground">
               <span class="line-clamp-2">{{ comment.content }}</span>
             </td>
             <td class="px-4 py-3 text-center text-muted-foreground">
               #{{ comment.postId }}
             </td>
-            <td class="px-4 py-3 text-left">
-              <span
-                class="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium"
-                :class="comment.status === 'approved'
-                  ? 'border-green-200 bg-green-50 text-green-700'
-                  : 'border-border bg-muted text-muted-foreground'"
-              >
-                <span class="h-1.5 w-1.5 rounded-full" :class="comment.status === 'approved' ? 'bg-green-500' : 'bg-neutral-400'" />
+            <td class="px-4 py-3 text-center">
+              <span class="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium" :class="comment.status === 'approved'
+                ? 'border-green-200 bg-green-50 text-green-700'
+                : 'border-border bg-muted text-muted-foreground'">
+                <span class="h-1.5 w-1.5 rounded-full"
+                  :class="comment.status === 'approved' ? 'bg-green-500' : 'bg-neutral-400'" />
                 {{ comment.status }}
               </span>
             </td>
@@ -143,9 +135,7 @@ async function deleteSelected() {
               <div class="flex items-center justify-center gap-1">
                 <button
                   class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
-                  title="Delete"
-                  @click="deleteComment(comment.id)"
-                >
+                  title="Delete" @click="deleteComment(comment.id)">
                   <Icon name="lucide:trash-2" class="h-4 w-4" />
                 </button>
               </div>
@@ -155,12 +145,7 @@ async function deleteSelected() {
       </table>
     </div>
 
-    <Pagination
-      :page="page"
-      :page-count="pageCount"
-      :total="comments.length"
-      :page-size="pageSize"
-      @update:page="goTo"
-    />
+    <Pagination :page="page" :page-count="pageCount" :total="comments.length" :page-size="pageSize"
+      @update:page="goTo" />
   </div>
 </template>

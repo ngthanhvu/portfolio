@@ -66,20 +66,20 @@ async function onSubmit() {
             <div class="grid gap-4 sm:grid-cols-2">
               <FormField label="Name" required>
                 <input v-model="form.name" type="text" required placeholder="Jane Doe"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
               <FormField label="Nickname" required>
                 <input v-model="form.nickname" type="text" required placeholder="jane"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
             </div>
             <FormField label="Email" required>
               <input v-model="form.email" type="email" required placeholder="jane@example.com"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Avatar URL" hint="Shown next to posts and comments.">
               <input v-model="form.avatar" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
           </FormSection>
         </div>
@@ -88,7 +88,7 @@ async function onSubmit() {
           <FormSection title="Access" description="Sign-in credentials and permissions." icon="lucide:shield-check">
             <FormField label="Password" required hint="Minimum 8 characters recommended.">
               <input v-model="form.password" type="password" required placeholder="••••••••"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Role" required hint="Admins can manage users and settings.">
               <div class="grid grid-cols-2 gap-2">
@@ -135,14 +135,14 @@ async function onSubmit() {
       <div
         class="fixed bottom-0 right-0 z-30 flex items-center justify-end gap-3 border-t border-border bg-background/80 px-8 py-2 backdrop-blur"
         :class="collapsed ? 'left-16' : 'left-64'">
-        <NuxtLink to="/admin/users"
-          class="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-          Cancel
+        <NuxtLink to="/admin/users" title="Cancel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent">
+          <Icon name="lucide:x" class="h-4 w-4" />
         </NuxtLink>
-        <button type="submit" :disabled="submitting"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="submit" :disabled="submitting" title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
           <Icon v-if="submitting" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ submitting ? 'Creating...' : 'Create User' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

@@ -90,6 +90,19 @@ export const comments = mysqlTable('comments', {
 }))
 
 // -------------------------------
+// Comment votes (like/dislike tracking per user)
+// -------------------------------
+export const commentVotes = mysqlTable('comment_votes', {
+  id: int('id').autoincrement().primaryKey(),
+  commentId: int('comment_id').notNull().references(() => comments.id, { onDelete: 'cascade' }),
+  userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  type: varchar('type', { length: 10 }).notNull(), // 'like" | "dislike"
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  uniqueVote: index('comment_vote_unique_idx').on(table.commentId, table.userId),
+}))
+
+// -------------------------------
 // Projects
 // -------------------------------
 export const projects = mysqlTable('projects', {
@@ -169,6 +182,12 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
   }),
   replies: many(comments, { relationName: 'commentTree' }),
   author: one(users, { fields: [comments.userId], references: [users.id] }),
+  votes: many(commentVotes),
+}))
+
+export const commentVotesRelations = relations(commentVotes, ({ one }) => ({
+  comment: one(comments, { fields: [commentVotes.commentId], references: [comments.id] }),
+  user: one(users, { fields: [commentVotes.userId], references: [users.id] }),
 }))
 
 export const projectsRelations = relations(projects, ({ many }) => ({
@@ -197,6 +216,9 @@ export type NewPostTag = typeof postTags.$inferInsert
 
 export type Comment = typeof comments.$inferSelect
 export type NewComment = typeof comments.$inferInsert
+
+export type CommentVote = typeof commentVotes.$inferSelect
+export type NewCommentVote = typeof commentVotes.$inferInsert
 
 export type Project = typeof projects.$inferSelect
 export type NewProject = typeof projects.$inferInsert

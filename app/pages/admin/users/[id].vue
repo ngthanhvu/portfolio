@@ -100,7 +100,7 @@ async function onSubmit() {
                   v-model="user.name"
                   type="text"
                   required
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
                 >
               </FormField>
               <FormField label="Nickname" required>
@@ -108,7 +108,7 @@ async function onSubmit() {
                   v-model="user.nickname"
                   type="text"
                   required
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
                 >
               </FormField>
             </div>
@@ -117,7 +117,7 @@ async function onSubmit() {
                 v-model="user.email"
                 type="email"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Avatar URL" hint="Shown next to posts and comments.">
@@ -125,7 +125,7 @@ async function onSubmit() {
                 v-model="user.avatar"
                 type="url"
                 placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
           </FormSection>
@@ -138,7 +138,7 @@ async function onSubmit() {
                 v-model="newPassword"
                 type="password"
                 placeholder="••••••••"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Role" required hint="Admins can manage users and settings.">
@@ -178,25 +178,27 @@ async function onSubmit() {
       >
         <button
           type="button"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          title="Reset"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
           @click="refresh()"
         >
           <Icon name="lucide:refresh-cw" class="h-4 w-4" />
-          Reset
         </button>
         <NuxtLink
           to="/admin/users"
-          class="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          title="Cancel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
         >
-          Cancel
+          <Icon name="lucide:x" class="h-4 w-4" />
         </NuxtLink>
         <button
           type="submit"
           :disabled="submitting"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Icon v-if="submitting" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ submitting ? 'Saving...' : 'Save Changes' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

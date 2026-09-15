@@ -76,16 +76,16 @@ async function onSubmit() {
           <FormSection title="Content" description="The main body of your post." icon="lucide:file-text">
             <FormField label="Title" required>
               <input v-model="form.title" type="text" required placeholder="How I built my portfolio"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Slug" required hint="URL-friendly identifier, e.g. how-i-built-my-portfolio">
               <input v-model="form.slug" type="text" required placeholder="how-i-built-my-portfolio"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Excerpt" required hint="Short summary shown in post listings.">
               <textarea v-model="form.excerpt" rows="3" required
                 placeholder="A quick walkthrough of the stack and decisions behind my portfolio."
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300" />
             </FormField>
             <FormField label="Content" required hint="Write your post with the rich text editor.">
               <RichEditor v-model="form.content" />
@@ -97,27 +97,27 @@ async function onSubmit() {
           <FormSection title="Organize" icon="lucide:tag">
             <FormField label="Category" required>
               <input v-model="form.category" type="text" required placeholder="Engineering"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
           </FormSection>
 
           <FormSection title="Publish" icon="lucide:calendar-clock">
             <FormField label="Cover Image URL" hint="Recommended 1200×630.">
               <input v-model="form.coverImage" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Published At" hint="Leave empty to keep as draft.">
               <input v-model="form.publishedAt" type="datetime-local"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <div class="grid grid-cols-2 gap-4">
               <FormField label="Read Time">
                 <input v-model="form.readTime" type="text" placeholder="5 phút"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
               <FormField label="Author ID" required>
                 <input v-model.number="form.authorId" type="number" required
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
             </div>
           </FormSection>
@@ -133,14 +133,14 @@ async function onSubmit() {
       <div
         class="fixed bottom-0 right-0 z-30 flex items-center justify-end gap-3 border-t border-border bg-background/80 px-8 py-2 backdrop-blur"
         :class="collapsed ? 'left-16' : 'left-64'">
-        <NuxtLink to="/admin/posts"
-          class="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-          Cancel
+        <NuxtLink to="/admin/posts" title="Cancel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent">
+          <Icon name="lucide:x" class="h-4 w-4" />
         </NuxtLink>
-        <button type="submit" :disabled="submitting"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="submit" :disabled="submitting" title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
           <Icon v-if="submitting" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ submitting ? 'Creating...' : 'Create Post' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

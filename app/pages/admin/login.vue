@@ -55,7 +55,7 @@ async function onSubmit() {
               type="email"
               required
               placeholder="admin@example.com"
-              class="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm focus:border-neutral-500 focus:outline-none"
+              class="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-700 placeholder:text-neutral-400 transition duration-300 ease shadow-sm focus:outline-none focus:border-slate-400 hover:border-slate-300"
             >
           </div>
 
@@ -66,7 +66,7 @@ async function onSubmit() {
               type="password"
               required
               placeholder="••••••••"
-              class="w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm focus:border-neutral-500 focus:outline-none"
+              class="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-700 placeholder:text-neutral-400 transition duration-300 ease shadow-sm focus:outline-none focus:border-slate-400 hover:border-slate-300"
             >
           </div>
 

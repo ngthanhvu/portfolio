@@ -80,7 +80,7 @@ async function onSubmit() {
                 v-model="post.title"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Slug" required>
@@ -88,7 +88,7 @@ async function onSubmit() {
                 v-model="post.slug"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Excerpt" required hint="Short summary shown in post listings.">
@@ -96,7 +96,7 @@ async function onSubmit() {
                 v-model="post.excerpt"
                 rows="3"
                 required
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               />
             </FormField>
             <FormField label="Content" required hint="Write your post with the rich text editor.">
@@ -112,7 +112,7 @@ async function onSubmit() {
                 v-model="post.category"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
           </FormSection>
@@ -123,7 +123,7 @@ async function onSubmit() {
                 v-model="post.coverImage"
                 type="url"
                 placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Read Time">
@@ -131,7 +131,7 @@ async function onSubmit() {
                 v-model="post.readTime"
                 type="text"
                 placeholder="5 phút"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
             <FormField label="Author ID" required>
@@ -139,7 +139,7 @@ async function onSubmit() {
                 v-model.number="post.authorId"
                 type="number"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
               >
             </FormField>
           </FormSection>
@@ -160,25 +160,27 @@ async function onSubmit() {
       >
         <button
           type="button"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          title="Reset"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
           @click="refresh()"
         >
           <Icon name="lucide:refresh-cw" class="h-4 w-4" />
-          Reset
         </button>
         <NuxtLink
           to="/admin/posts"
-          class="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          title="Cancel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
         >
-          Cancel
+          <Icon name="lucide:x" class="h-4 w-4" />
         </NuxtLink>
         <button
           type="submit"
           :disabled="submitting"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Icon v-if="submitting" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ submitting ? 'Saving...' : 'Save Changes' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

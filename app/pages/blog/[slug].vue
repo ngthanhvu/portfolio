@@ -18,7 +18,7 @@ if (error.value || !post.value) {
 
 useHead({
   title: post.value
-    ? `${post.value.title} | Portfolio`
+    ? `${post.value.title}`
     : 'Blog'
 })
 
@@ -223,94 +223,94 @@ onBeforeUnmount(() => {
           <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
             {{ post?.category }}
           </NuxtLink>
-            ·
-            <span class="inline-flex flex-wrap gap-1">
-              <NuxtLink v-for="tag in post?.tags" :key="tag" to="/"
-                class="hover:underline decoration-dashed underline-offset-4">
-                #{{ tag }}
-              </NuxtLink>
-            </span>
-          </div>
-
-          <!-- TOC -->
-          <details v-if="headings.length > 0" class="group mb-10 rounded-xl border border-neutral-200">
-            <summary class="flex cursor-pointer select-none items-center justify-between px-4 py-3">
-              <span class="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                TABLE OF CONTENT
-              </span>
-
-              <span class="text-xs text-neutral-500 group-open:hidden">
-                Expand
-              </span>
-
-              <span class="hidden text-xs text-neutral-500 group-open:inline">
-                Collapse
-              </span>
-            </summary>
-
-            <nav class="mt-2 space-y-2 px-4 pb-4 text-sm text-neutral-600">
-              <button v-for="heading in headings" :key="heading.id" type="button"
-                class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-neutral-900"
-                :class="{
-                  'ml-4':
-                    heading.level === 2,
-                  'ml-10':
-                    heading.level >= 3
-                }" @click="
-                  scrollToHeading(
-                    heading.id
-                  )
-                  ">
-                {{ heading.text }}
-              </button>
-            </nav>
-          </details>
+          ·
+          <span class="inline-flex flex-wrap gap-1">
+            <NuxtLink v-for="tag in post?.tags" :key="tag" to="/"
+              class="hover:underline decoration-dashed underline-offset-4">
+              #{{ tag }}
+            </NuxtLink>
+          </span>
         </div>
 
-        <!-- Article -->
-        <section class="relative mx-auto w-full max-w-2xl">
-          <article ref="articleRef" class="article-content px-7 lg:px-0" v-html="processedContent" />
+        <!-- TOC -->
+        <details v-if="headings.length > 0" class="group mb-10 rounded-xl border border-neutral-200">
+          <summary class="flex cursor-pointer select-none items-center justify-between px-4 py-3">
+            <span class="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
+              TABLE OF CONTENT
+            </span>
 
-          <!-- Floating TOC -->
-          <aside v-if="headings.length > 0"
-            class="pointer-events-none absolute top-0 left-[calc(100%+44px)] hidden w-42.5 xl:block" aria-label="文章目录">
-            <div ref="tocPanelRef" class="group/toc pointer-events-auto flex flex-col gap-2"
-              style="position: absolute; top: 0; left: 0">
-              <button v-for="heading in headings" :key="heading.id" type="button"
-                class="group/toc-link relative flex w-full cursor-pointer items-center justify-start border-0 bg-transparent py-1 pr-1 text-left text-xs"
-                :title="heading.text" :aria-label="`Jump to ${heading.text}`"
-                :aria-current="activeSlug === heading.id ? 'true' : undefined" @click="scrollToHeading(heading.id)">
-                <span
-                  class="toc-line block h-0.75 rounded-full bg-neutral-300/90 opacity-80 transition-all duration-200 group-hover/toc:opacity-0!"
-                  :class="{
-                    'w-12': heading.level === 2,
-                    'w-8': heading.level >= 3,
+            <span class="text-xs text-neutral-500 group-open:hidden">
+              Expand
+            </span>
 
-                    'is-active': activeSlug === heading.id
-                  }" />
+            <span class="hidden text-xs text-neutral-500 group-open:inline">
+              Collapse
+            </span>
+          </summary>
 
-                <span
-                  class="absolute inset-y-0 left-0 flex items-center pr-4 text-xs text-neutral-500 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
-                  :class="{
-                    'pl-0': heading.level === 2,
-                    'pl-3': heading.level >= 3,
+          <nav class="mt-2 space-y-2 px-4 pb-4 text-sm text-neutral-600">
+            <button v-for="heading in headings" :key="heading.id" type="button"
+              class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-neutral-900"
+              :class="{
+                'ml-4':
+                  heading.level === 2,
+                'ml-10':
+                  heading.level >= 3
+              }" @click="
+                scrollToHeading(
+                  heading.id
+                )
+                ">
+              {{ heading.text }}
+            </button>
+          </nav>
+        </details>
+      </div>
 
-                    'font-semibold text-neutral-900!':
-                      activeSlug === heading.id
-                  }">
-                  <span class="overflow-hidden text-ellipsis whitespace-nowrap">
-                    {{ heading.text }}
-                  </span>
+      <!-- Article -->
+      <section class="relative mx-auto w-full max-w-2xl">
+        <article ref="articleRef" class="article-content px-7 lg:px-0" v-html="processedContent" />
+
+        <!-- Floating TOC -->
+        <aside v-if="headings.length > 0"
+          class="pointer-events-none absolute top-0 left-[calc(100%+44px)] hidden w-42.5 xl:block" aria-label="文章目录">
+          <div ref="tocPanelRef" class="group/toc pointer-events-auto flex flex-col gap-2"
+            style="position: absolute; top: 0; left: 0">
+            <button v-for="heading in headings" :key="heading.id" type="button"
+              class="group/toc-link relative flex w-full cursor-pointer items-center justify-start border-0 bg-transparent py-1 pr-1 text-left text-xs"
+              :title="heading.text" :aria-label="`Jump to ${heading.text}`"
+              :aria-current="activeSlug === heading.id ? 'true' : undefined" @click="scrollToHeading(heading.id)">
+              <span
+                class="toc-line block h-0.75 rounded-full bg-neutral-300/90 opacity-80 transition-all duration-200 group-hover/toc:opacity-0!"
+                :class="{
+                  'w-12': heading.level === 2,
+                  'w-8': heading.level >= 3,
+
+                  'is-active': activeSlug === heading.id
+                }" />
+
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pr-4 text-xs text-neutral-500 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
+                :class="{
+                  'pl-0': heading.level === 2,
+                  'pl-3': heading.level >= 3,
+
+                  'font-semibold text-neutral-900!':
+                    activeSlug === heading.id
+                }">
+                <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {{ heading.text }}
                 </span>
-              </button>
-            </div>
-          </aside>
-        </section>
+              </span>
+            </button>
+          </div>
+        </aside>
+      </section>
 
-        <!-- Comments -->
-        <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
-          <CommentSection v-if="post" :post-id="Number(post.id)" />
-        </section>
+      <!-- Comments -->
+      <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
+        <CommentSection v-if="post" :post-id="Number(post.id)" />
+      </section>
     </main>
   </div>
 </template>

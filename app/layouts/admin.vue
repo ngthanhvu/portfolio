@@ -45,7 +45,7 @@ async function logout() {
     <aside class="fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-card transition-all duration-300"
       :class="collapsed ? 'w-16' : 'w-64'">
       <!-- Header -->
-      <div class="flex h-16 shrink-0 items-center border-b border-border px-4"
+      <div class="flex h-12 shrink-0 items-center border-b border-border px-4"
         :class="collapsed ? 'justify-center' : 'justify-between'">
         <NuxtLink v-if="!collapsed" to="/admin" class="flex min-w-0 flex-1 items-center gap-3">
           <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
@@ -105,8 +105,8 @@ async function logout() {
       </div>
 
       <!-- User profile -->
-      <div class="shrink-0 border-t border-border p-3">
-        <div v-if="!collapsed" class="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-muted/50">
+      <div class="shrink-0 border-t border-border p-2.5">
+        <div v-if="!collapsed" class="flex items-center gap-3 transition-colors hover:bg-muted/50">
           <div
             class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-foreground">
             {{ initials }}

@@ -63,12 +63,12 @@ async function onSubmit() {
           <FormSection title="Details" description="What is this project about?" icon="lucide:folder-git-2">
             <FormField label="Name" required>
               <input v-model="form.name" type="text" required placeholder="Portfolio"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Description" required hint="A short paragraph describing the project.">
               <textarea v-model="form.description" rows="6" required
                 placeholder="A Nuxt-powered portfolio with blog, projects and admin."
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300" />
             </FormField>
           </FormSection>
         </div>
@@ -77,14 +77,14 @@ async function onSubmit() {
           <FormSection title="Media & Links" icon="lucide:image">
             <FormField label="Image URL" hint="Thumbnail shown on the projects grid.">
               <input v-model="form.image" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <div v-if="form.image" class="overflow-hidden rounded-md border border-border bg-muted">
               <img :src="form.image" :alt="form.name || 'Preview'" class="h-32 w-full object-cover">
             </div>
             <FormField label="Project URL" required hint="Where should visitors go to learn more?">
               <input v-model="form.url" type="url" required placeholder="https://github.com/you/project"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
           </FormSection>
         </div>
@@ -99,14 +99,14 @@ async function onSubmit() {
       <div
         class="fixed bottom-0 right-0 z-30 flex items-center justify-end gap-3 border-t border-border bg-background/80 px-8 py-2 backdrop-blur"
         :class="collapsed ? 'left-16' : 'left-64'">
-        <NuxtLink to="/admin/projects"
-          class="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-          Cancel
+        <NuxtLink to="/admin/projects" title="Cancel"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent">
+          <Icon name="lucide:x" class="h-4 w-4" />
         </NuxtLink>
-        <button type="submit" :disabled="submitting"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="submit" :disabled="submitting" title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
           <Icon v-if="submitting" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ submitting ? 'Creating...' : 'Create Project' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

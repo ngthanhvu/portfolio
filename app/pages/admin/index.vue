@@ -92,17 +92,17 @@ const stats = computed(() => [
       <div class="flex flex-wrap gap-2">
         <NuxtLink
           to="/admin/posts/create"
-          class="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          title="New post"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
         >
           <Icon name="lucide:file-plus" class="h-4 w-4" />
-          New post
         </NuxtLink>
         <NuxtLink
           to="/admin/projects/create"
-          class="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90"
+          title="New project"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90"
         >
           <Icon name="lucide:plus" class="h-4 w-4" />
-          New project
         </NuxtLink>
       </div>
     </header>
@@ -143,9 +143,9 @@ const stats = computed(() => [
           <template #action>
             <NuxtLink
               to="/admin/posts"
-              class="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              title="View all posts"
+              class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              View all
               <Icon name="lucide:arrow-right" class="h-3.5 w-3.5" />
             </NuxtLink>
           </template>
@@ -197,9 +197,9 @@ const stats = computed(() => [
           <template #action>
             <NuxtLink
               to="/admin/comments"
-              class="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              title="View all comments"
+              class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              All
               <Icon name="lucide:arrow-right" class="h-3.5 w-3.5" />
             </NuxtLink>
           </template>

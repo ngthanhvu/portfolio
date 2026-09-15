@@ -122,20 +122,20 @@ async function onSubmit() {
             <div class="grid gap-4 sm:grid-cols-2">
               <FormField label="Name" required>
                 <input v-model="form.name" type="text" required placeholder="Jane Doe"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
               <FormField label="Nickname" required>
                 <input v-model="form.nickname" type="text" required placeholder="jane"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
               </FormField>
             </div>
             <FormField label="Tagline" hint="A one-line headline under your name.">
               <input v-model="form.tagline" type="text" placeholder="Software engineer & builder of things"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Bio" hint="A short paragraph about you.">
               <textarea v-model="form.bio" rows="5" placeholder="I build web apps with Nuxt and TypeScript..."
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300" />
             </FormField>
           </FormSection>
         </div>
@@ -144,7 +144,7 @@ async function onSubmit() {
           <FormSection title="Avatar & Contact" icon="lucide:contact">
             <FormField label="Avatar URL" hint="Square image works best.">
               <input v-model="form.avatar" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <div v-if="form.avatar || form.name"
               class="flex items-center gap-3 rounded-md border border-border bg-muted/40 p-3">
@@ -164,11 +164,11 @@ async function onSubmit() {
             </div>
             <FormField label="Email">
               <input v-model="form.email" type="email" placeholder="jane@example.com"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
             <FormField label="Start Date" hint="When you started, used to calculate running days.">
               <input v-model="form.startDate" type="date"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </FormField>
           </FormSection>
         </div>
@@ -176,11 +176,10 @@ async function onSubmit() {
 
       <FormSection title="Social Links" description="Ordered list of links in the hero." icon="lucide:link">
         <template #action>
-          <button type="button"
-            class="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+          <button type="button" title="Add social link"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
             @click="addSocial">
             <Icon name="lucide:plus" class="h-3.5 w-3.5" />
-            Add link
           </button>
         </template>
 
@@ -215,16 +214,16 @@ async function onSubmit() {
           </div>
           <div class="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.5fr_1fr]">
             <input v-model="social.name" type="text" placeholder="Name (GitHub)"
-              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             <input v-model="social.url" type="url" placeholder="https://github.com/you"
-              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             <div class="relative">
               <span
                 class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-muted-foreground">
                 <Icon :name="social.icon || 'lucide:globe'" class="h-4 w-4" />
               </span>
               <input v-model="social.icon" type="text" placeholder="simple-icons:github"
-                class="flex h-10 w-full rounded-md border border-border bg-background py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                class="flex h-10 w-full rounded-md border border-border bg-background py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
             </div>
           </div>
         </div>
@@ -246,16 +245,15 @@ async function onSubmit() {
       <div
         class="fixed bottom-0 right-0 z-30 flex items-center justify-end gap-3 border-t border-border bg-background/80 px-8 py-2 backdrop-blur"
         :class="collapsed ? 'left-16' : 'left-64'">
-        <button type="button"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+        <button type="button" title="Reset"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground transition-colors hover:bg-accent"
           @click="refresh()">
           <Icon name="lucide:refresh-cw" class="h-4 w-4" />
-          Reset
         </button>
-        <button type="submit" :disabled="saving"
-          class="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="submit" :disabled="saving" title="Save"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-foreground text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
           <Icon v-if="saving" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
-          {{ saving ? 'Saving...' : 'Save Changes' }}
+          <Icon v-else name="lucide:check" class="h-4 w-4" />
         </button>
       </div>
     </form>

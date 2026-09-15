@@ -18,6 +18,8 @@ export interface Comment {
   isAuthor: boolean
   status: string
   createdAt: string
+  userVote?: 'like' | 'dislike' | null
+  replies?: Comment[]
 }
 
 export type CommentSort = 'best' | 'newest' | 'oldest'
