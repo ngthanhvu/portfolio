@@ -1,6 +1,8 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../utils/db'
 import { posts } from '../../db/schema'
+import { sanitizeUser } from '../../utils/auth'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
@@ -25,5 +27,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Post not found' })
   }
 
-  return post
+  return {
+    ...post,
+    content: sanitizeHtml(post.content),
+    author: sanitizeUser(post.author),
+  }
 })

@@ -1,6 +1,8 @@
 import { z } from 'zod'
 import { db } from '../../utils/db'
 import { posts, postTags } from '../../db/schema'
+import { requireAdmin } from '../../utils/auth'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 const bodySchema = z.object({
   slug: z.string().min(1),
@@ -9,13 +11,14 @@ const bodySchema = z.object({
   content: z.string().min(1),
   coverImage: z.string().optional(),
   category: z.string().min(1),
-  authorId: z.number().int().positive(),
   publishedAt: z.string().datetime().optional(),
   readTime: z.string().optional(),
   tagIds: z.array(z.number().int().positive()).default([]),
 })
 
 export default defineEventHandler(async (event) => {
+  const user = await requireAdmin(event)
+
   const body = await readValidatedBody(event, bodySchema.parse)
 
   const [inserted] = await db
@@ -24,10 +27,10 @@ export default defineEventHandler(async (event) => {
       slug: body.slug,
       title: body.title,
       excerpt: body.excerpt,
-      content: body.content,
+      content: sanitizeHtml(body.content),
       coverImage: body.coverImage,
       category: body.category,
-      authorId: body.authorId,
+      authorId: user.id,
       publishedAt: body.publishedAt ? new Date(body.publishedAt) : new Date(),
       readTime: body.readTime,
     })

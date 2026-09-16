@@ -7,14 +7,14 @@ import { getTokenFromEvent, getUserFromToken } from '../../utils/auth'
 const bodySchema = z.object({
   name: z.string().min(1),
   nickname: z.string().min(1),
-  tagline: z.string(),
-  bio: z.string(),
-  avatar: z.string(),
-  email: z.string(),
-  startDate: z.string(),
+  tagline: z.string().max(255).optional().nullable(),
+  bio: z.string().optional().nullable(),
+  avatar: z.string().url().optional().nullable(),
+  email: z.string().email().optional().nullable(),
+  startDate: z.string().max(50).optional().nullable(),
   socials: z.array(z.object({
     name: z.string().min(1),
-    url: z.string().min(1),
+    url: z.string().url(),
     icon: z.string().min(1),
   })),
 })

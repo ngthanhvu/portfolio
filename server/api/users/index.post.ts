@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { db } from '../../utils/db'
 import { users } from '../../db/schema'
+import { requireAdmin } from '../../utils/auth'
 
 const bodySchema = z.object({
   name: z.string().min(1),
@@ -13,6 +14,8 @@ const bodySchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
+  await requireAdmin(event)
+
   const body = await readValidatedBody(event, bodySchema.parse)
 
   const hashedPassword = await bcrypt.hash(body.password, 10)

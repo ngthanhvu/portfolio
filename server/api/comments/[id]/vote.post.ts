@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { db } from '../../../utils/db'
 import { comments, commentVotes } from '../../../db/schema'
 import { getTokenFromEvent, getUserFromToken } from '../../../utils/auth'
@@ -54,8 +54,8 @@ export default defineEventHandler(async (event) => {
     })
     await db.update(comments)
       .set({
-        likes: voteType === 'like' ? comment.likes + 1 : comment.likes,
-        dislikes: voteType === 'dislike' ? comment.dislikes + 1 : comment.dislikes,
+        likes: voteType === 'like' ? sql`${comments.likes} + 1` : undefined,
+        dislikes: voteType === 'dislike' ? sql`${comments.dislikes} + 1` : undefined,
       })
       .where(eq(comments.id, id))
     return { success: true, vote: voteType }
@@ -71,12 +71,8 @@ export default defineEventHandler(async (event) => {
       await db.delete(commentVotes).where(eq(commentVotes.id, existingVote.id))
       await db.update(comments)
         .set({
-          likes: existingVote.type === 'like'
-            ? Math.max(0, comment.likes - 1)
-            : comment.likes,
-          dislikes: existingVote.type === 'dislike'
-            ? Math.max(0, comment.dislikes - 1)
-            : comment.dislikes,
+          likes: existingVote.type === 'like' ? sql`GREATEST(${comments.likes} - 1, 0)` : undefined,
+          dislikes: existingVote.type === 'dislike' ? sql`GREATEST(${comments.dislikes} - 1, 0)` : undefined,
         })
         .where(eq(comments.id, id))
       return { success: true, vote: null }
@@ -89,11 +85,11 @@ export default defineEventHandler(async (event) => {
     await db.update(comments)
       .set({
         likes: voteType === 'like'
-          ? comment.likes + 1
-          : Math.max(0, comment.likes - 1),
+          ? sql`${comments.likes} + 1`
+          : sql`GREATEST(${comments.likes} - 1, 0)`,
         dislikes: voteType === 'dislike'
-          ? comment.dislikes + 1
-          : Math.max(0, comment.dislikes - 1),
+          ? sql`${comments.dislikes} + 1`
+          : sql`GREATEST(${comments.dislikes} - 1, 0)`,
       })
       .where(eq(comments.id, id))
     return { success: true, vote: voteType }

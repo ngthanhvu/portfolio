@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
 import { db } from '../../utils/db'
-import { comments } from '../../db/schema'
+import { comments, posts } from '../../db/schema'
 import { getTokenFromEvent, getUserFromToken } from '../../utils/auth'
 
 const bodySchema = z.object({
@@ -19,6 +19,14 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readValidatedBody(event, bodySchema.parse)
+
+  const post = await db.query.posts.findFirst({
+    where: eq(posts.id, body.postId),
+  })
+
+  if (!post) {
+    throw createError({ statusCode: 404, statusMessage: 'Post not found' })
+  }
 
   // Only admins can reply, and replies can only be one level deep.
   if (body.parentId) {
@@ -48,7 +56,7 @@ export default defineEventHandler(async (event) => {
       authorName: user.name,
       authorAvatar: user.avatar,
       content: body.content,
-      isAuthor: user.role === 'admin',
+      isAuthor: post.authorId === user.id,
     })
     .$returningId()
 

@@ -1,13 +1,15 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../../utils/db'
 import { posts } from '../../../db/schema'
+import { sanitizeUser } from '../../../utils/auth'
+import { sanitizeHtml } from '../../../utils/sanitize'
 
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, 'slug')
 
   if (!slug) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid slug' })
-  }
+    }
 
   const post = await db.query.posts.findFirst({
     where: eq(posts.slug, slug),
@@ -25,5 +27,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Post not found' })
   }
 
-  return post
+  return {
+    ...post,
+    content: sanitizeHtml(post.content),
+    author: sanitizeUser(post.author),
+  }
 })

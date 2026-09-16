@@ -3,6 +3,10 @@ definePageMeta({
   layout: false,
 })
 
+const turnstileEnabled = !!useRuntimeConfig().public.turnstile?.siteKey
+const turnstileToken = ref('')
+const turnstileRef = ref<{ reset: () => void } | null>(null)
+
 const form = reactive({
   email: '',
   password: '',
@@ -18,12 +22,16 @@ async function onSubmit() {
   try {
     await $fetch('/api/auth/login', {
       method: 'POST',
-      body: form,
+      body: {
+        ...form,
+        'cf-turnstile-response': turnstileToken.value,
+      },
     })
     await navigateTo('/admin')
   }
   catch (err: any) {
     error.value = err?.data?.message || err?.message || 'Login failed'
+    turnstileRef.value?.reset()
   }
   finally {
     loading.value = false
@@ -70,23 +78,26 @@ async function onSubmit() {
             >
           </div>
 
+          <NuxtTurnstile
+            v-if="turnstileEnabled"
+            ref="turnstileRef"
+            v-model="turnstileToken"
+            class="min-h-[65px]"
+          />
+
           <p v-if="error" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
             {{ error }}
           </p>
 
           <button
             type="submit"
-            :disabled="loading"
+            :disabled="loading || (turnstileEnabled && !turnstileToken)"
             class="w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-50"
           >
             {{ loading ? 'Signing in...' : 'Sign in' }}
           </button>
         </form>
       </div>
-
-      <p class="mt-4 text-center text-xs text-neutral-400">
-        Default: admin@thanhvu.net / admin123
-      </p>
     </div>
   </div>
 </template>

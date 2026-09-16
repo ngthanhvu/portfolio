@@ -3,19 +3,40 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { db } from '../../utils/db'
 import { users } from '../../db/schema'
-import { generateToken } from '../../utils/auth'
+import { generateToken, checkRateLimit, getRateLimitKey } from '../../utils/auth'
 
 const bodySchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(6),
-  'cf-turnstile-response': z.string().min(1),
+  'cf-turnstile-response': z.string().min(1).optional(),
 })
+
+function isTurnstileEnabled(event: any) {
+  const config = useRuntimeConfig(event)
+  return !!config.public.turnstile?.siteKey
+}
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse)
 
-  const result = await verifyTurnstileToken(body['cf-turnstile-response'])
+  const rateLimit = checkRateLimit(getRateLimitKey(event, 'register'), 3, 60 * 60 * 1000)
+  if (!rateLimit.allowed) {
+    throw createError({
+      statusCode: 429,
+      statusMessage: 'Too many registration attempts. Please try again later.',
+    })
+  }
+
+  if (isTurnstileEnabled(event)) {
+    if (!body['cf-turnstile-response']) {
+      throw createError({ statusCode: 400, statusMessage: 'Captcha required' })
+    }
+    const result = await verifyTurnstileToken(body['cf-turnstile-response'])
+    if (!result.success) {
+      throw createError({ statusCode: 400, statusMessage: 'Captcha verification failed' })
+    }
+  }
   if (!result.success) {
     throw createError({ statusCode: 400, statusMessage: 'Captcha verification failed' })
   }

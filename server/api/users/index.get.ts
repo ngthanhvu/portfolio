@@ -1,6 +1,9 @@
 import { db } from '../../utils/db'
+import { requireAdmin } from '../../utils/auth'
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  await requireAdmin(event)
+
   const list = await db.query.users.findMany({
     orderBy: (users, { desc }) => [desc(users.createdAt)],
   })

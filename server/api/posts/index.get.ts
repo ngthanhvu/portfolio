@@ -1,6 +1,8 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../utils/db'
 import { posts } from '../../db/schema'
+import { sanitizeUser } from '../../utils/auth'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,10 +25,16 @@ export default defineEventHandler(async (event) => {
       offset,
     })
 
+    const safeList = list.map((post) => ({
+      ...post,
+      content: sanitizeHtml(post.content),
+      author: sanitizeUser(post.author),
+    }))
+
     const total = await db.$count(posts)
 
     return {
-      data: list,
+      data: safeList,
       pagination: {
         page,
         limit,

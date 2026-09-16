@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { db } from '../../utils/db'
 import { users } from '../../db/schema'
+import { requireAdmin } from '../../utils/auth'
 
 const bodySchema = z.object({
   name: z.string().min(1).optional(),
@@ -19,6 +20,8 @@ export default defineEventHandler(async (event) => {
   if (!id || Number.isNaN(id)) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid user ID' })
   }
+
+  await requireAdmin(event)
 
   const body = await readValidatedBody(event, bodySchema.parse)
 

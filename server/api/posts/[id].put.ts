@@ -2,6 +2,8 @@ import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../utils/db'
 import { posts, postTags } from '../../db/schema'
+import { requireAdmin } from '../../utils/auth'
+import { sanitizeHtml } from '../../utils/sanitize'
 
 const bodySchema = z.object({
   slug: z.string().min(1).optional(),
@@ -10,7 +12,6 @@ const bodySchema = z.object({
   content: z.string().min(1).optional(),
   coverImage: z.string().optional().nullable(),
   category: z.string().min(1).optional(),
-  authorId: z.number().int().positive().optional(),
   publishedAt: z.string().datetime().optional().nullable(),
   readTime: z.string().optional().nullable(),
   tagIds: z.array(z.number().int().positive()).optional(),
@@ -23,6 +24,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Invalid post ID' })
   }
 
+  await requireAdmin(event)
+
   const body = await readValidatedBody(event, bodySchema.parse)
 
   await db
@@ -31,10 +34,9 @@ export default defineEventHandler(async (event) => {
       slug: body.slug,
       title: body.title,
       excerpt: body.excerpt,
-      content: body.content,
+      content: body.content !== undefined ? sanitizeHtml(body.content) : undefined,
       coverImage: body.coverImage,
       category: body.category,
-      authorId: body.authorId,
       publishedAt: body.publishedAt === null ? null : body.publishedAt ? new Date(body.publishedAt) : undefined,
       readTime: body.readTime,
       updatedAt: new Date(),
