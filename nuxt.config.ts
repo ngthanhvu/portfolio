@@ -12,14 +12,18 @@ export default defineNuxtConfig({
     },
   ],
   css: ['~/assets/css/main.css'],
-  turnstile: {
-    siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || undefined,
-  },
   runtimeConfig: {
     turnstile: {
       // Use real secret key in production via NUXT_TURNSTILE_SECRET_KEY.
       // Falls back to Turnstile test secret key for local dev.
       secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || '1x0000000000000000000000000000000AA',
+    },
+    public: {
+      turnstile: {
+        // Site key is public so the widget can render on the client.
+        // Set via NUXT_PUBLIC_TURNSTILE_SITE_KEY at runtime.
+        siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || undefined,
+      },
     },
   },
   // Allow external access (Docker/tunnel) and fix HMR through reverse proxy
