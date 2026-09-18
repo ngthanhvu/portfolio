@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxt/icon',
-    '@nuxtjs/turnstile',
+    '@nuxtjs/sitemap',
   ],
   components: [
     {
@@ -21,14 +21,17 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
   ],
   runtimeConfig: {
-    turnstile: {
-      secretKey: '',
-    },
-    public: {
-      turnstile: {
-        siteKey: '',
-      },
-    },
+    public: {},
+  },
+  sitemap: {
+    siteUrl: process.env.NUXT_SITEMAP_SITE_URL || 'https://ngthanhvu.com',
+    exclude: [
+      '/admin/**',
+      '/admin',
+    ],
+    sources: [
+      '/api/__sitemap__/urls',
+    ],
   },
   devServer: {
     host: process.env.NUXT_DEV_HOST || '0.0.0.0',

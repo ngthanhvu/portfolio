@@ -25,13 +25,9 @@ const authLoading = ref(false)
 const commentError = ref('')
 const showAuthDialog = ref(false)
 const emailInput = ref<HTMLInputElement | null>(null)
-const turnstileToken = ref('')
-const turnstileRef = ref<{ reset: () => void } | null>(null)
 const showShareDialog = ref(false)
 const shareUrl = ref('')
 const shareCopied = ref(false)
-
-const turnstileEnabled = !!useRuntimeConfig().public.turnstile?.siteKey
 
 const { data, refresh } = await useFetch(() => `/api/comments?postId=${props.postId}`)
 
@@ -83,10 +79,6 @@ function onKeydown(e: KeyboardEvent) {
 
 watch(showAuthDialog, (open) => {
     if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
-    if (!open) {
-        turnstileToken.value = ''
-        turnstileRef.value?.reset()
-    }
 })
 
 async function handleSubmit() {
@@ -127,11 +119,6 @@ function closeAuthDialog() {
 async function handleAuth() {
     authError.value = ''
 
-    if (turnstileEnabled && !turnstileToken.value) {
-        authError.value = 'Please complete the captcha verification.'
-        return
-    }
-
     authLoading.value = true
 
     try {
@@ -140,17 +127,11 @@ async function handleAuth() {
             ? { email: authForm.email, password: authForm.password }
             : { name: authForm.name, email: authForm.email, password: authForm.password }
 
-        if (turnstileEnabled) {
-            body['cf-turnstile-response'] = turnstileToken.value
-        }
-
         currentUser.value = await $fetch<CurrentUser>(url, { method: 'POST', body })
         authForm.name = ''
         authForm.email = ''
         authForm.password = ''
         showAuthDialog.value = false
-        turnstileToken.value = ''
-        turnstileRef.value?.reset()
 
         if (newComment.value.trim()) {
             await handleSubmit()
@@ -408,15 +389,12 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
                                 <input v-model="authForm.password" type="password" placeholder="Password" required
                                     class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
 
-                                <NuxtTurnstile v-if="turnstileEnabled" ref="turnstileRef" v-model="turnstileToken"
-                                    class="flex justify-center" />
-
                                 <p v-if="authError" class="flex items-center gap-2 text-sm text-red-600">
                                     <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
                                     {{ authError }}
                                 </p>
 
-                                <button type="submit" :disabled="authLoading || (turnstileEnabled && !turnstileToken)"
+                                <button type="submit" :disabled="authLoading"
                                     class="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
                                     <Icon v-if="authLoading" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
                                     {{

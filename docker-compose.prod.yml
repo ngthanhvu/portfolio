@@ -13,6 +13,7 @@ services:
 
     environment:
       NODE_ENV: production
+      NUXT_SITEMAP_SITE_URL: https://thanhvu.net
 
       # Nuxt/Nitro phải listen toàn bộ interface BÊN TRONG container
       NITRO_HOST: 0.0.0.0

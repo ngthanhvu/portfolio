@@ -8,13 +8,7 @@ import { generateToken, checkRateLimit, getRateLimitKey } from '../../utils/auth
 const bodySchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
-  'cf-turnstile-response': z.string().min(1).optional(),
 })
-
-function isTurnstileEnabled(event: any) {
-  const config = useRuntimeConfig(event)
-  return !!config.public.turnstile?.siteKey
-}
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse)
@@ -25,16 +19,6 @@ export default defineEventHandler(async (event) => {
       statusCode: 429,
       statusMessage: 'Too many login attempts. Please try again later.',
     })
-  }
-
-  if (isTurnstileEnabled(event)) {
-    if (!body['cf-turnstile-response']) {
-      throw createError({ statusCode: 400, statusMessage: 'Captcha required' })
-    }
-    const result = await verifyTurnstileToken(body['cf-turnstile-response'])
-    if (!result.success) {
-      throw createError({ statusCode: 400, statusMessage: 'Captcha verification failed' })
-    }
   }
 
   const user = await db.query.users.findFirst({
