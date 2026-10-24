@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { marked } from 'marked'
 import { usePosts } from '~/composables/usePosts'
 
 const route = useRoute()
@@ -27,12 +28,25 @@ const activeSlug = ref<string>('')
 const articleRef = ref<HTMLElement | null>(null)
 const tocPanelRef = ref<HTMLElement | null>(null)
 
+const parsedHtml = computed(() => {
+  if (!post.value?.content) return ''
+  const content = post.value.content
+
+  // Normalize TipTap-wrapped markdown lines (<p># ...</p>, <p>## ...</p>, etc.)
+  const normalized = content
+    .replace(/<\/p>\s*<p>/gi, '\n\n')
+    .replace(/^<p>|<\/p>$/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+
+  return (marked.parse(normalized, { async: false }) as string) || ''
+})
+
 const headings = computed(() => {
-  if (!post.value?.content) return []
+  if (!parsedHtml.value) return []
 
   const matches = [
-    ...post.value.content.matchAll(
-      /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/g
+    ...parsedHtml.value.matchAll(
+      /<h([1-4])([^>]*)>(.*?)<\/h[1-4]>/g
     )
   ]
 
@@ -44,12 +58,12 @@ const headings = computed(() => {
 })
 
 const processedContent = computed(() => {
-  if (!post.value?.content) return ''
+  if (!parsedHtml.value) return ''
 
   let counter = 0
 
-  return post.value.content.replace(
-    /<h([2-4])([^>]*)>(.*?)<\/h([2-4])>/g,
+  return parsedHtml.value.replace(
+    /<h([1-4])([^>]*)>(.*?)<\/h([1-4])>/g,
     (_, level, attrs, text) => {
       const id = `heading-${counter++}`
 
@@ -98,7 +112,7 @@ onMounted(() => {
 
   const headingElements = Array.from(
     article.querySelectorAll<HTMLElement>(
-      'h2, h3, h4'
+      'h1, h2, h3, h4'
     )
   )
 
@@ -212,50 +226,50 @@ onBeforeUnmount(() => {
   <div class="relative min-h-screen">
     <GridBackground class="h-full w-full" />
 
-    <main class="relative z-30 mx-auto mt-10 max-w-4xl bg-white text-neutral-900 md:rounded-t-md">
-      <div class="mx-auto w-full max-w-2xl px-5 lg:px-0">
-        <h1 class="text-3xl font-bold md:mb-8 md:text-4xl lg:text-5xl">
+    <main class="relative z-30 mx-auto max-w-4xl border-x border-zinc-800 bg-zinc-950 px-5 pt-10 pb-16 text-zinc-200 sm:px-8 sm:pt-14 md:pt-16">
+      <div class="mx-auto w-full max-w-2xl">
+        <h1 class="mb-4 text-3xl font-bold uppercase tracking-tight text-white sm:mb-6 md:text-4xl lg:text-5xl">
           {{ post?.title }}
         </h1>
-        <div class="mb-6 font-semibold text-neutral-500">
+        <div class="label-mono mb-8 border-b border-zinc-800/80 pb-6 text-[11px] text-zinc-500">
           {{ post?.publishedAt }}
-          ·
-          <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
+          /
+          <NuxtLink to="/" class="underline underline-offset-4 hover:text-sky-300">
             {{ post?.category }}
           </NuxtLink>
-          ·
+          /
           <span class="inline-flex flex-wrap gap-1">
             <NuxtLink v-for="tag in post?.tags" :key="tag" to="/"
-              class="hover:underline decoration-dashed underline-offset-4">
+              class="underline underline-offset-4 hover:text-sky-300">
               #{{ tag }}
             </NuxtLink>
           </span>
         </div>
 
         <!-- TOC -->
-        <details v-if="headings.length > 0" class="group mb-10 rounded-xl border border-neutral-200">
+        <details v-if="headings.length > 0" class="group mb-10 border border-zinc-800 bg-black">
           <summary class="flex cursor-pointer select-none items-center justify-between px-4 py-3">
-            <span class="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
+            <span class="label-mono text-[11px] text-zinc-300">
               TABLE OF CONTENT
             </span>
 
-            <span class="text-xs text-neutral-500 group-open:hidden">
+            <span class="label-mono text-[11px] text-zinc-600 group-open:hidden">
               Expand
             </span>
 
-            <span class="hidden text-xs text-neutral-500 group-open:inline">
+            <span class="label-mono hidden text-[11px] text-zinc-600 group-open:inline">
               Collapse
             </span>
           </summary>
 
-          <nav class="mt-2 space-y-2 px-4 pb-4 text-sm text-neutral-600">
+          <nav class="mt-2 space-y-2 border-t border-zinc-800 px-4 py-4 text-[12px] text-zinc-500">
             <button v-for="heading in headings" :key="heading.id" type="button"
-              class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-neutral-900"
+              class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-zinc-100"
               :class="{
-                'ml-4':
-                  heading.level === 2,
-                'ml-10':
-                  heading.level >= 3
+                'font-semibold text-zinc-200': heading.level === 1,
+                'ml-3': heading.level === 2,
+                'ml-7 text-zinc-400': heading.level === 3,
+                'ml-11 text-zinc-500': heading.level >= 4
               }" @click="
                 scrollToHeading(
                   heading.id
@@ -269,11 +283,11 @@ onBeforeUnmount(() => {
 
       <!-- Article -->
       <section class="relative mx-auto w-full max-w-2xl">
-        <article ref="articleRef" class="article-content px-7 lg:px-0" v-html="processedContent" />
+        <article ref="articleRef" class="article-content" v-html="processedContent" />
 
         <!-- Floating TOC -->
         <aside v-if="headings.length > 0"
-          class="pointer-events-none absolute top-0 left-[calc(100%+44px)] hidden w-42.5 xl:block" aria-label="文章目录">
+          class="pointer-events-none absolute top-0 left-[calc(100%+44px)] hidden w-42.5 xl:block" aria-label="Table of Contents">
           <div ref="tocPanelRef" class="group/toc pointer-events-auto flex flex-col gap-2"
             style="position: absolute; top: 0; left: 0">
             <button v-for="heading in headings" :key="heading.id" type="button"
@@ -281,21 +295,20 @@ onBeforeUnmount(() => {
               :title="heading.text" :aria-label="`Jump to ${heading.text}`"
               :aria-current="activeSlug === heading.id ? 'true' : undefined" @click="scrollToHeading(heading.id)">
               <span
-                class="toc-line block h-0.75 rounded-full bg-neutral-300/90 opacity-80 transition-all duration-200 group-hover/toc:opacity-0!"
+                class="toc-line block h-0.75 bg-zinc-600 opacity-80 transition-all duration-150 group-hover/toc:opacity-0!"
                 :class="{
+                  'w-16': heading.level === 1,
                   'w-12': heading.level === 2,
                   'w-8': heading.level >= 3,
-
                   'is-active': activeSlug === heading.id
                 }" />
 
               <span
-                class="absolute inset-y-0 left-0 flex items-center pr-4 text-xs text-neutral-500 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
+                class="absolute inset-y-0 left-0 flex items-center pr-4 text-[11px] text-zinc-600 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
                 :class="{
-                  'pl-0': heading.level === 2,
+                  'pl-0 font-medium': heading.level <= 2,
                   'pl-3': heading.level >= 3,
-
-                  'font-semibold text-neutral-900!':
+                  'font-semibold text-zinc-100!':
                     activeSlug === heading.id
                 }">
                 <span class="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -308,7 +321,7 @@ onBeforeUnmount(() => {
       </section>
 
       <!-- Comments -->
-      <section class="relative mx-auto w-full max-w-2xl px-7 pb-16 lg:px-0">
+      <section class="relative mx-auto w-full max-w-2xl pb-16">
         <CommentSection v-if="post" :post-id="Number(post.id)" />
       </section>
     </main>
@@ -316,135 +329,160 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.article-content :deep(h1) {
+  margin-top: 2.75rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f4f4f5;
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 0.5rem;
+}
+
 .article-content :deep(h2) {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
-
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-
-  color: var(--color-foreground);
+  color: #e4e4e7;
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 0.35rem;
 }
 
 .article-content :deep(h3) {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 600;
-
-  color: var(--color-foreground);
+  color: #d4d4d8;
 }
 
 .article-content :deep(h4) {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
-
-  color: var(--color-foreground);
+  color: #d4d4d8;
 }
 
 .article-content :deep(p) {
   margin-bottom: 1.25rem;
-
   line-height: 1.75;
 }
 
 .article-content :deep(a) {
-  color: inherit;
-
+  color: #7dd3fc;
   text-decoration: underline;
-  text-decoration-style: dashed;
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+.article-content :deep(a:hover) {
+  color: #bae6fd;
 }
 
 .article-content :deep(img) {
   width: 100%;
-
   margin: 1.5rem 0;
-
-  border-radius: 0.5rem;
+  border: 1px solid #373e4b;
 }
 
 .article-content :deep(ul),
 .article-content :deep(ol) {
   margin-bottom: 1.25rem;
-
   padding-left: 1.5rem;
+}
 
+.article-content :deep(ul) {
   list-style: disc;
+}
+
+.article-content :deep(ol) {
+  list-style: decimal;
 }
 
 .article-content :deep(li) {
   margin-bottom: 0.5rem;
-
   line-height: 1.75;
 }
 
 .article-content :deep(strong) {
   font-weight: 700;
+  color: #fafafa;
 }
 
 .article-content :deep(pre) {
-  background: var(--color-muted);
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  background: #1a1e25;
+  border: 1px solid #373e4b;
+  padding: 0.85rem 1rem;
   overflow-x: auto;
-  margin: 0 0 1rem;
-  font-family: ui-monospace, SFMono-Regular, monospace;
-  font-size: 0.875rem;
+  margin: 1rem 0 1.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.825rem;
+  line-height: 1.6;
 }
 
 .article-content :deep(code) {
-  background: var(--color-muted);
+  background: #2b303c;
+  border: 1px solid #373e4b;
   padding: 0.1rem 0.35rem;
-  border-radius: 0.25rem;
   font-size: 0.875em;
-  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #38bdf8;
 }
 
 .article-content :deep(pre code) {
   background: transparent;
+  border: none;
   padding: 0;
+  color: #e2e8f0;
 }
 
 .article-content :deep(blockquote) {
-  border-left: 3px solid var(--color-border);
+  border-left: 3px solid #38bdf8;
   padding-left: 1rem;
-  color: var(--color-muted-foreground);
-  margin: 0 0 1rem;
+  color: #8791a0;
+  margin: 1.25rem 0;
   font-style: italic;
+  background: rgba(56, 189, 248, 0.03);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .article-content :deep(table) {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
 }
 
 .article-content :deep(th),
 .article-content :deep(td) {
-  border: 1px solid var(--color-border);
-  padding: 0.5rem;
+  border: 1px solid #373e4b;
+  padding: 0.6rem 0.75rem;
   text-align: left;
 }
 
 .article-content :deep(th) {
-  background: var(--color-muted);
+  background: #22262f;
   font-weight: 600;
+  color: #e4e4e7;
+}
+
+.article-content :deep(tr:nth-child(even)) {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .article-content :deep(hr) {
   border: none;
-  border-top: 1px solid var(--color-border);
-  margin: 2rem 0;
+  border-top: 1px solid #27272a;
+  margin: 2.5rem 0;
 }
 
 .toc-line.is-active {
   height: 4px;
-  background-color: rgb(23 23 23);
+  background-color: #38bdf8;
   opacity: 1;
 }
 

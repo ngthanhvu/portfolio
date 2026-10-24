@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
 const { profile, fetchProfile } = useProfile()
-const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 
 useHead({
@@ -19,58 +18,42 @@ const navLinks = [
   { name: 'About', path: '/about' },
 ]
 
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 16
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  handleScroll()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
-
 watch(route, () => {
   isMobileMenuOpen.value = false
 })
 </script>
 
 <template>
-  <header
-    class="fixed left-0 right-0 top-0 z-50 transition-all duration-300"
-    :class="isScrolled ? 'h-14' : 'h-20'"
-  >
-    <div
-      class="mx-auto flex h-full max-w-5xl items-center justify-between px-4 transition-all duration-300 lg:rounded-b-xl lg:border-l lg:border-r"
-      :class="isScrolled
-        ? 'border-b border-l-0 border-r-0 border-neutral-300/50 bg-white/80 backdrop-blur-2xl lg:border-neutral-300/50'
-        : 'border-transparent bg-transparent'"
-    >
-      <NuxtLink to="/" class="relative z-30 flex items-center gap-2 text-sm font-semibold text-neutral-900">
-        <img :src="profile.avatar" :alt="profile.name" class="h-5 w-5 rounded-full" />
-        <span class="text-nowrap">Hi, {{ profile.name }}</span>
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-zinc-800 bg-black">
+    <div class="mx-auto flex h-12 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <NuxtLink to="/" class="flex min-w-0 items-center gap-2.5">
+        <img :src="profile.avatar" :alt="profile.name"
+          class="h-5 w-5 shrink-0 border border-zinc-700 bg-zinc-950 object-cover" />
+        <span class="label-mono truncate text-[13px] font-bold tracking-[0.06em] text-white">
+          HI, {{ profile.name }}
+        </span>
       </NuxtLink>
 
-      <nav class="relative z-30 flex items-center gap-1 text-sm text-neutral-500">
+      <nav class="flex items-center gap-2">
         <!-- Mobile menu toggle -->
         <button
-          class="flex h-6 w-6 items-center justify-center sm:hidden"
+          class="flex h-7 w-7 items-center justify-center border border-zinc-700 bg-zinc-950 text-zinc-400 transition-colors hover:border-zinc-500 hover:text-zinc-100 sm:hidden"
           aria-label="Toggle menu"
           @click="isMobileMenuOpen = !isMobileMenuOpen"
         >
-          <Icon name="lucide:menu" class="h-5 w-5" />
+          <Icon name="lucide:menu" class="h-4 w-4" />
         </button>
 
         <!-- Desktop nav -->
-        <div class="hidden items-center gap-1 sm:flex">
+        <div class="hidden items-center gap-1.5 sm:flex">
           <NuxtLink
             v-for="link in navLinks"
             :key="link.path"
             :to="link.path"
-            class="px-3 py-2 font-medium text-neutral-500 transition-colors hover:text-neutral-900"
-            :class="route.path === link.path ? 'text-neutral-900' : ''"
+            class="label-mono border px-2.5 py-1 text-[11px] transition-colors duration-150"
+            :class="route.path === link.path
+              ? 'border-sky-500/40 bg-sky-500/10 text-sky-300'
+              : 'border-zinc-700/80 bg-zinc-900/60 text-zinc-400 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-100'"
           >
             {{ link.name }}
           </NuxtLink>
@@ -81,19 +64,21 @@ watch(route, () => {
     <!-- Mobile menu -->
     <div
       v-if="isMobileMenuOpen"
-      class="fixed inset-x-0 top-14 z-40 px-3 pb-4 pt-2 sm:hidden"
+      class="border-t border-zinc-900 bg-black sm:hidden"
     >
-      <div class="relative rounded-xl border border-dashed border-neutral-300 bg-white p-2 backdrop-blur-sm">
+      <nav class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-2">
         <NuxtLink
           v-for="link in navLinks"
           :key="link.path"
           :to="link.path"
-          class="block rounded-lg px-3 py-2 text-center text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-900"
-          :class="route.path === link.path ? 'text-neutral-900' : ''"
+          class="label-mono border px-2.5 py-2 text-[11px] transition-colors duration-150"
+          :class="route.path === link.path
+            ? 'border-sky-500/40 bg-sky-500/10 text-sky-300'
+            : 'border-transparent text-zinc-400 hover:border-zinc-700 hover:text-zinc-100'"
         >
           {{ link.name }}
         </NuxtLink>
-      </div>
+      </nav>
     </div>
   </header>
 </template>

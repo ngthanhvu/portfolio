@@ -11,11 +11,11 @@ withDefaults(defineProps<{
 
 <template>
   <div class="space-y-1.5">
-    <label class="block text-sm font-medium text-foreground">
+    <label class="label-mono block text-[11px] text-zinc-500">
       {{ label }}
-      <span v-if="required" class="text-red-500">*</span>
+      <span v-if="required" class="ml-0.5 text-red-400">*</span>
     </label>
-    <p v-if="hint" class="text-xs text-muted-foreground">
+    <p v-if="hint" class="label-mono text-[10px] text-zinc-600">
       {{ hint }}
     </p>
     <slot />

@@ -72,7 +72,7 @@ async function onSubmit() {
                 v-model="project.name"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <FormField label="Description" required hint="A short paragraph describing the project.">
@@ -80,7 +80,7 @@ async function onSubmit() {
                 v-model="project.description"
                 rows="6"
                 required
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               />
             </FormField>
           </FormSection>
@@ -93,7 +93,7 @@ async function onSubmit() {
                 v-model="project.image"
                 type="url"
                 placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <div
@@ -108,7 +108,7 @@ async function onSubmit() {
                 type="url"
                 required
                 placeholder="https://github.com/you/project"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
           </FormSection>
@@ -117,7 +117,7 @@ async function onSubmit() {
 
       <p
         v-if="error"
-        class="flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600"
+        class="flex items-center gap-2 rounded-md border border-red-500/40 px-3 py-2 text-sm text-red-400"
       >
         <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
         {{ error }}

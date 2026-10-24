@@ -13,30 +13,26 @@ defineProps<Props>()
     :href="project.url"
     target="_blank"
     rel="noopener noreferrer"
-    class="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl p-3 sm:p-7"
+    class="group relative flex min-w-0 flex-col border border-zinc-800 bg-zinc-950 p-3 transition-colors duration-150 hover:border-zinc-600 hover:bg-zinc-900 sm:p-4"
   >
-    <!-- Background layers for double border hover effect -->
-    <span class="absolute inset-0 z-20 rounded-2xl border border-dashed border-transparent bg-transparent transition-all duration-300 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:border-neutral-300 group-hover:bg-white" />
-    <span class="absolute inset-0 z-10 rounded-2xl border border-dashed border-neutral-300 transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:translate-y-1" />
-
     <!-- Content -->
-    <span class="relative z-30 block transition-transform duration-300 ease-out group-hover:-translate-x-1 group-hover:-translate-y-1">
+    <span class="relative z-30 block">
       <span class="block w-full">
         <img
           :src="project.image"
           :alt="project.name"
-          class="aspect-video w-full rounded-lg object-cover"
+          class="aspect-video w-full border border-zinc-800 object-cover"
         />
       </span>
-      <span class="mt-3 block w-full px-1 sm:mt-5">
-        <span class="mb-1 flex min-w-0 items-center gap-1 text-base font-semibold tracking-tight text-neutral-900">
-          <span class="truncate">{{ project.name }}</span>
+      <span class="mt-4 block w-full px-1">
+        <span class="mb-1 flex min-w-0 items-center gap-2 text-[13px] font-bold text-zinc-100">
+          <span class="truncate transition-colors group-hover:text-sky-300">{{ project.name }}</span>
           <Icon
             name="lucide:arrow-up-right"
-            class="h-3 w-3 flex-shrink-0 -rotate-45 text-neutral-400 transition-all duration-200 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:rotate-0"
+            class="h-3.5 w-3.5 flex-shrink-0 text-zinc-600 transition-colors duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-sky-300"
           />
         </span>
-        <span class="block truncate text-sm text-neutral-600">
+        <span class="block truncate text-[12px] text-zinc-500">
           {{ project.description }}
         </span>
       </span>

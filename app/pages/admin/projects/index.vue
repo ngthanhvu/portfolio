@@ -65,11 +65,11 @@ async function deleteSelected() {
     </header>
 
     <div v-if="selected.size > 0"
-      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2">
-      <Icon name="lucide:check-square" class="h-4 w-4 text-red-600" />
-      <span class="text-sm font-medium text-red-700">{{ selected.size }} selected</span>
+      class="mb-4 flex items-center gap-3 rounded-md border border-red-500/40 px-3 py-2">
+      <Icon name="lucide:check-square" class="h-4 w-4 text-red-400" />
+      <span class="text-sm font-medium text-red-400">{{ selected.size }} selected</span>
       <button
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 transition-colors hover:bg-red-200"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-500/20 text-red-400 transition-colors"
         title="Delete selected" @click="deleteSelected">
         <Icon name="lucide:trash-2" class="h-4 w-4" />
       </button>
@@ -129,7 +129,7 @@ async function deleteSelected() {
                   <Icon name="lucide:pencil" class="h-4 w-4" />
                 </NuxtLink>
                 <button
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
+                  class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-400 transition-colors"
                   title="Delete" @click="deleteProject(project.id)">
                   <Icon name="lucide:trash-2" class="h-4 w-4" />
                 </button>

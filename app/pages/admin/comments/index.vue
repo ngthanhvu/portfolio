@@ -61,11 +61,11 @@ async function deleteSelected() {
     </header>
 
     <div v-if="selected.size > 0"
-      class="mb-4 flex items-center gap-3 rounded-md border border-red-200 bg-red-50 px-3 py-2">
-      <Icon name="lucide:check-square" class="h-4 w-4 text-red-600" />
-      <span class="text-sm font-medium text-red-700">{{ selected.size }} selected</span>
+      class="mb-4 flex items-center gap-3 rounded-md border border-red-500/40 px-3 py-2">
+      <Icon name="lucide:check-square" class="h-4 w-4 text-red-400" />
+      <span class="text-sm font-medium text-red-400">{{ selected.size }} selected</span>
       <button
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 transition-colors hover:bg-red-200"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-red-500/20 text-red-400 transition-colors"
         title="Delete selected" @click="deleteSelected">
         <Icon name="lucide:trash-2" class="h-4 w-4" />
       </button>
@@ -123,18 +123,18 @@ async function deleteSelected() {
               #{{ comment.postId }}
             </td>
             <td class="px-4 py-3 text-center">
-              <span class="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium" :class="comment.status === 'approved'
-                ? 'border-green-200 bg-green-50 text-green-700'
+              <span class="label-mono inline-flex items-center gap-1 border px-2 py-0.5 text-xs" :class="comment.status === 'approved'
+                ? 'border-green-500/40 bg-green-500/10 text-green-400'
                 : 'border-border bg-muted text-muted-foreground'">
-                <span class="h-1.5 w-1.5 rounded-full"
-                  :class="comment.status === 'approved' ? 'bg-green-500' : 'bg-neutral-400'" />
+                <span class="h-1.5 w-1.5"
+                  :class="comment.status === 'approved' ? 'bg-green-400' : 'bg-zinc-600'" />
                 {{ comment.status }}
               </span>
             </td>
             <td class="px-4 py-3">
               <div class="flex items-center justify-center gap-1">
                 <button
-                  class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
+                  class="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-400 transition-colors"
                   title="Delete" @click="deleteComment(comment.id)">
                   <Icon name="lucide:trash-2" class="h-4 w-4" />
                 </button>

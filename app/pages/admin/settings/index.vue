@@ -122,20 +122,20 @@ async function onSubmit() {
             <div class="grid gap-4 sm:grid-cols-2">
               <FormField label="Name" required>
                 <input v-model="form.name" type="text" required placeholder="Jane Doe"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
               </FormField>
               <FormField label="Nickname" required>
                 <input v-model="form.nickname" type="text" required placeholder="jane"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
               </FormField>
             </div>
             <FormField label="Tagline" hint="A one-line headline under your name.">
               <input v-model="form.tagline" type="text" placeholder="Software engineer & builder of things"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
             <FormField label="Bio" hint="A short paragraph about you.">
               <textarea v-model="form.bio" rows="5" placeholder="I build web apps with Nuxt and TypeScript..."
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300" />
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600" />
             </FormField>
           </FormSection>
         </div>
@@ -144,7 +144,7 @@ async function onSubmit() {
           <FormSection title="Avatar & Contact" icon="lucide:contact">
             <FormField label="Avatar URL" hint="Square image works best.">
               <input v-model="form.avatar" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
             <div v-if="form.avatar || form.name"
               class="flex items-center gap-3 rounded-md border border-border bg-muted/40 p-3">
@@ -164,11 +164,11 @@ async function onSubmit() {
             </div>
             <FormField label="Email">
               <input v-model="form.email" type="email" placeholder="jane@example.com"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
             <FormField label="Start Date" hint="When you started, used to calculate running days.">
               <input v-model="form.startDate" type="date"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
           </FormSection>
         </div>
@@ -206,7 +206,7 @@ async function onSubmit() {
                 <Icon name="lucide:chevron-down" class="h-4 w-4" />
               </button>
               <button type="button"
-                class="inline-flex h-7 w-7 items-center justify-center rounded text-red-600 transition-colors hover:bg-red-50"
+                class="inline-flex h-7 w-7 items-center justify-center rounded text-red-400 transition-colors"
                 title="Remove" @click="removeSocial(index)">
                 <Icon name="lucide:trash-2" class="h-4 w-4" />
               </button>
@@ -214,16 +214,16 @@ async function onSubmit() {
           </div>
           <div class="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.5fr_1fr]">
             <input v-model="social.name" type="text" placeholder="Name (GitHub)"
-              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             <input v-model="social.url" type="url" placeholder="https://github.com/you"
-              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+              class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             <div class="relative">
               <span
                 class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5 text-muted-foreground">
                 <Icon :name="social.icon || 'lucide:globe'" class="h-4 w-4" />
               </span>
               <input v-model="social.icon" type="text" placeholder="simple-icons:github"
-                class="flex h-10 w-full rounded-md border border-border bg-background py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background py-2 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </div>
           </div>
         </div>
@@ -231,12 +231,12 @@ async function onSubmit() {
 
       <div v-if="error || saved" class="flex flex-wrap gap-2">
         <p v-if="error"
-          class="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+          class="inline-flex items-center gap-2 rounded-md border border-red-500/40 px-3 py-2 text-sm text-red-400">
           <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
           {{ error }}
         </p>
         <p v-if="saved"
-          class="inline-flex items-center gap-2 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-600">
+          class="inline-flex items-center gap-2 rounded-md border border-green-500/40 bg-green-500/10 px-3 py-2 text-sm text-green-400">
           <Icon name="lucide:check-circle-2" class="h-4 w-4 shrink-0" />
           Saved successfully.
         </p>

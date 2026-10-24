@@ -37,20 +37,21 @@ function goHome() {
 </script>
 
 <template>
-    <section class="bg-white min-h-screen flex items-center">
-        <div class="py-8 px-4 mx-auto max-w-7xl lg:py-16 lg:px-6 w-full">
+    <section class="flex min-h-screen items-center bg-black">
+        <div class="mx-auto w-full max-w-7xl px-4 py-8 lg:px-6 lg:py-16">
             <div class="mx-auto max-w-screen-sm text-center">
-                <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600">
+                <h1 class="mb-6 text-7xl font-extrabold leading-none tabular-nums tracking-tighter text-white lg:text-9xl">
                     {{ statusCode }}
                 </h1>
-                <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl">
-                    {{ title }}
+                <p class="label-mono mb-4 text-[12px] text-sky-300">
+                    // {{ title }}
                 </p>
-                <p class="mb-4 text-lg font-light text-gray-500">
+                <p class="label-mono mb-8 text-[11px] leading-relaxed text-zinc-500">
                     {{ description }}
                 </p>
-                <button type="button" @click="goHome"
-                    class="cursor-pointer px-4 py-2 rounded-md border border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground">
+                <button type="button"
+                    class="label-mono inline-flex border border-sky-500/40 bg-sky-500/10 px-6 py-2.5 text-[12px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-100 active:bg-sky-500/30"
+                    @click="goHome">
                     Back to Home
                 </button>
             </div>

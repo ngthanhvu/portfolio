@@ -7,32 +7,32 @@ defineProps<{
 </script>
 
 <template>
-  <section class="border-b border-border bg-muted/30 py-12 md:py-20">
+  <section class="border-b border-zinc-800 bg-zinc-950/60 py-12 md:py-20">
     <div class="container mx-auto px-4 md:px-6">
       <div class="mb-6 flex items-center gap-3">
-        <span class="h-px flex-1 bg-border" />
+        <span class="h-px flex-1 bg-zinc-800" />
         <Badge>Featured post</Badge>
-        <span class="h-px flex-1 bg-border" />
+        <span class="h-px flex-1 bg-zinc-800" />
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2 lg:items-center">
         <NuxtLink
           :to="`/blog/${featuredPost.slug}`"
-          class="group relative block aspect-[16/9] overflow-hidden rounded-lg lg:aspect-[4/3]"
+          class="group relative block aspect-[16/9] overflow-hidden border border-zinc-800 lg:aspect-[4/3]"
         >
           <img
             :src="featuredPost.coverImage"
             :alt="featuredPost.title"
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            class="h-full w-full object-cover"
           />
         </NuxtLink>
 
         <div class="flex flex-col items-start">
           <Badge variant="outline" class="mb-4">{{ featuredPost.category }}</Badge>
-          <h1 class="mb-4 text-2xl font-bold tracking-tight text-foreground md:text-4xl">
+          <h1 class="mb-4 text-2xl font-bold tracking-tight text-white md:text-4xl">
             {{ featuredPost.title }}
           </h1>
-          <p class="mb-6 text-base text-muted-foreground md:text-lg">
+          <p class="mb-6 text-[13px] text-zinc-500 md:text-sm">
             {{ featuredPost.excerpt }}
           </p>
 
@@ -40,17 +40,17 @@ defineProps<{
             <img
               :src="featuredPost.authorAvatar"
               :alt="featuredPost.author"
-              class="h-10 w-10 rounded-full border border-border"
+              class="h-10 w-10 border border-zinc-800 object-cover"
             />
             <div>
-              <p class="text-sm font-medium text-foreground">{{ featuredPost.author }}</p>
-              <p class="text-xs text-muted-foreground">{{ featuredPost.publishedAt }} · {{ featuredPost.readTime }}</p>
+              <p class="text-[13px] font-medium text-zinc-200">{{ featuredPost.author }}</p>
+              <p class="label-mono text-[11px] text-zinc-500">{{ featuredPost.publishedAt }} / {{ featuredPost.readTime }}</p>
             </div>
           </div>
 
           <NuxtLink
             :to="`/blog/${featuredPost.slug}`"
-            class="inline-flex h-10 items-center justify-center rounded-md bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
+            class="label-mono inline-flex h-10 items-center justify-center border border-sky-500/40 bg-sky-500/10 px-6 text-[12px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-100 active:bg-sky-500/30"
           >
             Đọc ngay
           </NuxtLink>

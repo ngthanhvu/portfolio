@@ -32,102 +32,53 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
-    <div class="w-full max-w-sm">
-      <div class="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+  <div class="relative flex min-h-screen items-center justify-center bg-black p-5">
+    <GridBackground />
+
+    <div class="relative z-20 w-full max-w-sm">
+      <form class="border border-zinc-800 bg-zinc-950 p-7" @submit.prevent="onSubmit">
         <!-- Header -->
         <div class="mb-6 flex flex-col items-center text-center">
           <div
-            class="mb-4 flex size-10 items-center justify-center rounded-md border border-neutral-200 bg-white shadow-sm">
-            <Icon name="lucide:lock-keyhole" class="size-5 text-neutral-900" />
+            class="mb-4 flex size-10 items-center justify-center border border-sky-500/40 bg-sky-500/10 text-sky-300">
+            <Icon name="lucide:lock-keyhole" class="size-5" />
           </div>
 
-          <h1 class="text-2xl font-semibold tracking-tight text-neutral-950">
-            Admin Login
-          </h1>
+          <h1 class="m-0 text-center text-lg font-bold text-white">Admin Login</h1>
 
-          <p class="mt-1.5 text-sm text-neutral-500">
+          <p class="label-mono mt-1.5 text-center text-[12px] text-zinc-500">
             Sign in to your admin account
           </p>
         </div>
 
-        <form class="space-y-4" @submit.prevent="onSubmit">
-          <!-- Email -->
-          <div class="space-y-2">
-            <label for="email" class="text-sm font-medium text-neutral-900">
-              Email
-            </label>
+        <!-- Email -->
+        <label class="mb-4 block">
+          <span class="label-mono block text-[11px] text-zinc-500">Email</span>
+          <input id="email" v-model="form.email" type="email" required autocomplete="email"
+            placeholder="admin@example.com" spellcheck="false"
+            class="mt-1.5 w-full border border-zinc-800 bg-black px-3 py-2 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400">
+        </label>
 
-            <input id="email" v-model="form.email" type="email" required autocomplete="email"
-              placeholder="admin@example.com" class="
-                flex h-10 w-full rounded-md
-                border border-neutral-200
-                bg-white px-3 py-2
-                text-sm text-neutral-900
-                shadow-sm
-                outline-none
-                transition-all
-                placeholder:text-neutral-400
-                hover:border-neutral-300
-                focus:border-neutral-400
-                focus:ring-2
-                focus:ring-neutral-950/10
-              ">
-          </div>
+        <!-- Password -->
+        <label class="mb-6 block">
+          <span class="label-mono block text-[11px] text-zinc-500">Password</span>
+          <input id="password" v-model="form.password" type="password" required autocomplete="current-password"
+            placeholder="••••••••"
+            class="mt-1.5 w-full border border-zinc-800 bg-black px-3 py-2 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400">
+        </label>
 
-          <!-- Password -->
-          <div class="space-y-2">
-            <label for="password" class="text-sm font-medium text-neutral-900">
-              Password
-            </label>
+        <!-- Error -->
+        <div v-if="error" class="label-mono mb-4 border border-red-500/40 bg-red-500/10 px-3 py-2 text-[12px] text-red-400">
+          {{ error }}
+        </div>
 
-            <input id="password" v-model="form.password" type="password" required autocomplete="current-password"
-              placeholder="••••••••" class="
-                flex h-10 w-full rounded-md
-                border border-neutral-200
-                bg-white px-3 py-2
-                text-sm text-neutral-900
-                shadow-sm
-                outline-none
-                transition-all
-                placeholder:text-neutral-400
-                hover:border-neutral-300
-                focus:border-neutral-400
-                focus:ring-2
-                focus:ring-neutral-950/10
-              ">
-          </div>
-
-          <!-- Error -->
-          <div v-if="error" class="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
-            {{ error }}
-          </div>
-
-          <!-- Button -->
-          <button type="submit" :disabled="loading" class="
-              inline-flex h-10 w-full
-              items-center justify-center
-              rounded-md
-              bg-neutral-900
-              px-4
-              text-sm font-medium
-              text-white
-              shadow-sm
-              transition-colors
-              hover:bg-neutral-800
-              focus:outline-none
-              focus:ring-2
-              focus:ring-neutral-950/20
-              focus:ring-offset-2
-              disabled:pointer-events-none
-              disabled:opacity-50
-            ">
-            <Icon v-if="loading" name="lucide:loader-circle" class="mr-2 size-4 animate-spin" />
-
-            {{ loading ? 'Signing in...' : 'Sign in' }}
-          </button>
-        </form>
-      </div>
+        <!-- Button -->
+        <button type="submit" :disabled="loading"
+          class="label-mono w-full select-none border border-sky-500/40 bg-sky-500/10 py-2.5 text-[12.5px] font-medium text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-100 active:bg-sky-500/30 disabled:pointer-events-none disabled:opacity-40">
+          <Icon v-if="loading" name="lucide:loader-circle" class="mr-2 inline size-4 animate-spin" />
+          {{ loading ? 'Signing in…' : 'Continue' }}
+        </button>
+      </form>
     </div>
   </div>
 </template>

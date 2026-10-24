@@ -60,20 +60,20 @@ useHead({
   <div class="relative min-h-screen">
     <GridBackground />
 
-    <div class="relative z-20 mx-auto max-w-5xl px-7 pb-12 pt-8 md:pt-12 lg:px-0">
-      <h1 class="mb-4 text-3xl font-bold tracking-tight text-neutral-900 md:text-4xl">
+    <div class="relative z-20 mx-auto max-w-5xl px-4 pb-12 pt-8 sm:px-6 md:pt-12 lg:px-8">
+      <h1 class="mb-4 text-3xl font-bold uppercase tracking-tight text-white md:text-4xl">
         Posts
       </h1>
 
       <div class="relative mb-6">
         <input v-model="searchQuery" type="search" placeholder="Search posts by title or keyword..."
-          class="w-full rounded-xl border border-dashed border-neutral-300 bg-white/70 px-4 py-3 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 transition duration-300 ease shadow-sm focus:outline-none focus:border-slate-400 hover:border-slate-300" />
-        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-neutral-400">
+          class="w-full border border-zinc-800 bg-black px-4 py-2.5 pr-10 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400" />
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-500">
           <Icon name="lucide:search" class="h-4 w-4" />
         </div>
       </div>
 
-      <p class="mb-8 text-sm text-neutral-500">
+      <p class="label-mono mb-8 text-[11px] text-zinc-500">
         {{ filteredPosts.length }} posts
       </p>
 
@@ -82,8 +82,8 @@ useHead({
       </div>
 
       <div v-if="filteredPosts.length === 0"
-        class="flex flex-col items-center py-12 text-center text-sm text-neutral-500">
-        <span>
+        class="flex flex-col items-center border border-dashed border-border py-12 text-center">
+        <span class="label-mono text-[11px] text-zinc-500">
           <template v-if="searchQuery.trim()">
             No posts found matching "{{ searchQuery }}".
           </template>
@@ -93,7 +93,7 @@ useHead({
         </span>
       </div>
 
-      <div v-show="hasMore" ref="loadMoreRef" class="py-8 text-center text-sm text-neutral-500">
+      <div v-show="hasMore" ref="loadMoreRef" class="label-mono py-8 text-center text-[11px] text-zinc-500">
         Loading more posts...
       </div>
     </div>

@@ -38,7 +38,7 @@ function go(p: number) {
       <button
         type="button"
         :disabled="page <= 1"
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40"
+        class="label-mono inline-flex h-8 w-8 items-center justify-center border border-zinc-800 bg-zinc-950 text-zinc-500 transition-colors duration-150 hover:border-zinc-600 hover:text-zinc-100 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Previous page"
         @click="go(page - 1)"
       >
@@ -48,10 +48,10 @@ function go(p: number) {
         v-for="p in pages"
         :key="p"
         type="button"
-        class="inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-xs font-medium transition-colors"
+        class="label-mono inline-flex h-8 min-w-8 items-center justify-center border px-2 text-[11px] transition-colors duration-150"
         :class="p === page
-          ? 'border-foreground bg-foreground text-background'
-          : 'border-border text-muted-foreground hover:bg-accent'"
+          ? 'border-sky-500/40 bg-sky-500/10 text-sky-300'
+          : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-600 hover:text-zinc-100'"
         @click="go(p)"
       >
         {{ p }}
@@ -59,7 +59,7 @@ function go(p: number) {
       <button
         type="button"
         :disabled="page >= pageCount"
-        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40"
+        class="label-mono inline-flex h-8 w-8 items-center justify-center border border-zinc-800 bg-zinc-950 text-zinc-500 transition-colors duration-150 hover:border-zinc-600 hover:text-zinc-100 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Next page"
         @click="go(page + 1)"
       >

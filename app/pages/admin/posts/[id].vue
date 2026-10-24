@@ -80,7 +80,7 @@ async function onSubmit() {
                 v-model="post.title"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <FormField label="Slug" required>
@@ -88,7 +88,7 @@ async function onSubmit() {
                 v-model="post.slug"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <FormField label="Excerpt" required hint="Short summary shown in post listings.">
@@ -96,7 +96,7 @@ async function onSubmit() {
                 v-model="post.excerpt"
                 rows="3"
                 required
-                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               />
             </FormField>
             <FormField label="Content" required hint="Write your post with the rich text editor.">
@@ -112,7 +112,7 @@ async function onSubmit() {
                 v-model="post.category"
                 type="text"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
           </FormSection>
@@ -123,7 +123,7 @@ async function onSubmit() {
                 v-model="post.coverImage"
                 type="url"
                 placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <FormField label="Read Time">
@@ -131,7 +131,7 @@ async function onSubmit() {
                 v-model="post.readTime"
                 type="text"
                 placeholder="5 phút"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
             <FormField label="Author ID" required>
@@ -139,7 +139,7 @@ async function onSubmit() {
                 v-model.number="post.authorId"
                 type="number"
                 required
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600"
               >
             </FormField>
           </FormSection>
@@ -148,7 +148,7 @@ async function onSubmit() {
 
       <p
         v-if="error"
-        class="flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600"
+        class="flex items-center gap-2 rounded-md border border-red-500/40 px-3 py-2 text-sm text-red-400"
       >
         <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
         {{ error }}

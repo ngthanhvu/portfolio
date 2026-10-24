@@ -66,20 +66,20 @@ async function onSubmit() {
             <div class="grid gap-4 sm:grid-cols-2">
               <FormField label="Name" required>
                 <input v-model="form.name" type="text" required placeholder="Jane Doe"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
               </FormField>
               <FormField label="Nickname" required>
                 <input v-model="form.nickname" type="text" required placeholder="jane"
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
               </FormField>
             </div>
             <FormField label="Email" required>
               <input v-model="form.email" type="email" required placeholder="jane@example.com"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
             <FormField label="Avatar URL" hint="Shown next to posts and comments.">
               <input v-model="form.avatar" type="url" placeholder="https://..."
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
           </FormSection>
         </div>
@@ -88,7 +88,7 @@ async function onSubmit() {
           <FormSection title="Access" description="Sign-in credentials and permissions." icon="lucide:shield-check">
             <FormField label="Password" required hint="Minimum 8 characters recommended.">
               <input v-model="form.password" type="password" required placeholder="••••••••"
-                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-zinc-400 hover:border-zinc-600">
             </FormField>
             <FormField label="Role" required hint="Admins can manage users and settings.">
               <div class="grid grid-cols-2 gap-2">
@@ -127,7 +127,7 @@ async function onSubmit() {
       </div>
 
       <p v-if="error"
-        class="flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+        class="flex items-center gap-2 rounded-md border border-red-500/40 px-3 py-2 text-sm text-red-400">
         <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
         {{ error }}
       </p>

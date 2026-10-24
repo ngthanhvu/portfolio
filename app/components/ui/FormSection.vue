@@ -10,22 +10,22 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <section class="overflow-hidden rounded-lg border border-border bg-card">
+  <section class="overflow-hidden border border-zinc-800 bg-zinc-950">
     <header
       v-if="title"
-      class="flex items-center gap-3 border-b border-border bg-muted/40 px-5 py-3.5"
+      class="flex items-center gap-3 border-b border-zinc-800 bg-zinc-900/60 px-5 py-3"
     >
       <span
         v-if="icon"
-        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-background text-foreground"
+        class="flex h-7 w-7 shrink-0 items-center justify-center border border-zinc-700 bg-black text-zinc-300"
       >
         <Icon :name="icon" class="h-4 w-4" />
       </span>
       <div class="min-w-0 flex-1">
-        <h2 class="text-sm font-semibold text-foreground">
+        <h2 class="label-mono text-[11px] text-zinc-200">
           {{ title }}
         </h2>
-        <p v-if="description" class="truncate text-xs text-muted-foreground">
+        <p v-if="description" class="label-mono mt-0.5 truncate text-[10px] text-zinc-600">
           {{ description }}
         </p>
       </div>

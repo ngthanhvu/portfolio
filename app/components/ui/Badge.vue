@@ -8,12 +8,12 @@ withDefaults(defineProps<{
 
 <template>
   <span
-    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors"
+    class="label-mono inline-flex items-center border px-1.5 py-px text-[11px] leading-5 transition-colors"
     :class="{
-      'border-transparent bg-foreground text-background': variant === 'default',
-      'border-transparent bg-muted text-foreground': variant === 'secondary',
-      'border-border bg-transparent text-foreground': variant === 'outline',
-      'border-transparent bg-transparent text-muted-foreground hover:bg-muted': variant === 'ghost'
+      'border-sky-500/40 bg-sky-500/10 text-sky-300': variant === 'default',
+      'border-zinc-700 bg-zinc-900/60 text-zinc-300': variant === 'secondary',
+      'border-zinc-800 bg-transparent text-zinc-500': variant === 'outline',
+      'border-transparent bg-transparent text-zinc-500 hover:border-zinc-700 hover:text-zinc-200': variant === 'ghost'
     }"
   >
     <slot />

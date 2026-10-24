@@ -118,7 +118,7 @@ const stats = computed(() => [
         <div class="flex items-center justify-between">
           <span
             class="flex h-10 w-10 items-center justify-center rounded-md"
-            :class="stat.accent ? 'bg-red-50 text-red-600' : 'bg-muted text-foreground'"
+            :class="stat.accent ? 'bg-red-500/10 text-red-400' : 'bg-muted text-foreground'"
           >
             <Icon :name="stat.icon" class="h-5 w-5" />
           </span>
@@ -236,7 +236,7 @@ const stats = computed(() => [
                 </div>
                 <button
                   type="button"
-                  class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-red-600 transition-colors hover:bg-red-50"
+                  class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-red-400 transition-colors"
                   title="Delete comment"
                   @click="deleteComment(comment.id)"
                 >
@@ -249,7 +249,7 @@ const stats = computed(() => [
             v-else
             class="flex flex-col items-center gap-2 rounded-md border border-dashed border-border bg-muted/30 px-3 py-8 text-center"
           >
-            <Icon name="lucide:check-circle-2" class="h-8 w-8 text-green-500" />
+            <Icon name="lucide:check-circle-2" class="h-8 w-8 text-green-400" />
             <p class="text-sm text-muted-foreground">
               All caught up — no pending comments.
             </p>

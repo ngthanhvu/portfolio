@@ -257,11 +257,11 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
 
 <template>
     <section class="mx-auto w-full max-w-3xl py-6 text-foreground">
-        <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-semibold">
+        <div class="mb-4 flex items-center justify-between border-b border-zinc-800 pb-3">
+            <h2 class="label-mono text-[11px] text-zinc-300">
                 {{ commentCount }} comments
             </h2>
-            <button v-if="currentUser" class="text-sm text-muted-foreground hover:text-foreground"
+            <button v-if="currentUser" class="label-mono text-[11px] text-zinc-600 hover:text-zinc-100"
                 @click="handleLogout">
                 Logout
             </button>
@@ -270,64 +270,64 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
         <!-- Composer: always visible once auth state is known -->
         <div v-if="authChecked" class="mb-6 flex gap-3">
             <img v-if="currentUser" :src="currentUserAvatar" :alt="currentUser.name"
-                class="h-10 w-10 shrink-0 rounded-full object-cover" />
+                class="h-10 w-10 shrink-0 border border-zinc-800 object-cover" />
             <div v-else
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                class="flex h-10 w-10 shrink-0 items-center justify-center border border-zinc-800 bg-zinc-950 text-zinc-500">
                 <Icon name="lucide:message-circle" class="h-5 w-5" />
             </div>
 
             <div class="flex-1">
                 <textarea v-model="newComment" rows="3" placeholder="Join the discussion…"
-                    class="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-slate-400 hover:border-slate-300"
+                    class="w-full resize-none border border-zinc-800 bg-black px-4 py-3 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400"
                     @keydown.enter="onComposerEnter" />
 
                 <div class="mt-3 flex items-center justify-between gap-3">
-                    <span class="text-sm text-muted-foreground">
+                    <span class="label-mono text-[11px] text-zinc-600">
                         <template v-if="currentUser">
                             Commenting as
-                            <span class="font-medium text-foreground">{{ currentUser.name }}</span>
+                            <span class="text-zinc-300">{{ currentUser.name }}</span>
                         </template>
                         <template v-else>Login to join the discussion.</template>
                     </span>
 
                     <button v-if="currentUser" type="button" :disabled="!newComment.trim()"
-                        class="inline-flex items-center rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
+                        class="label-mono inline-flex items-center border border-sky-500/40 bg-sky-500/10 px-4 py-2 text-[11px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-200 active:bg-sky-500/30 disabled:pointer-events-none disabled:opacity-40"
                         @click="handleSubmit">
                         Comment
                     </button>
                     <button v-else type="button"
-                        class="inline-flex items-center gap-2 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
+                        class="label-mono inline-flex items-center gap-2 border border-sky-500/40 bg-sky-500/10 px-4 py-2 text-[11px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-200 active:bg-sky-500/30"
                         @click="openAuthDialog">
                         <Icon name="lucide:log-in" class="h-4 w-4" />
                         Login to comment
                     </button>
                 </div>
 
-                <p v-if="commentError" class="mt-2 text-sm text-red-600">
+                <p v-if="commentError" class="label-mono mt-2 text-[11px] text-red-400">
                     {{ commentError }}
                 </p>
             </div>
         </div>
 
         <!-- Loading auth state -->
-        <div v-else class="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+        <div v-else class="label-mono mb-6 flex items-center gap-2 text-[11px] text-zinc-600">
             <Icon name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
             Loading…
         </div>
 
-        <div class="mb-6 flex items-center justify-end gap-4 text-sm">
-            <button class="font-medium transition-colors cursor-pointer"
-                :class="sort === 'best' ? 'text-foreground underline underline-offset-4' : 'text-muted-foreground hover:text-foreground'"
+        <div class="label-mono mb-6 flex items-center justify-end gap-4 text-[11px]">
+            <button class="cursor-pointer transition-colors duration-150"
+                :class="sort === 'best' ? 'text-sky-300 underline decoration-2 underline-offset-4' : 'text-zinc-500 hover:text-zinc-100'"
                 @click="sort = 'best'">
                 Best
             </button>
-            <button class="font-medium transition-colors cursor-pointer"
-                :class="sort === 'newest' ? 'text-foreground underline underline-offset-4' : 'text-muted-foreground hover:text-foreground'"
+            <button class="cursor-pointer transition-colors duration-150"
+                :class="sort === 'newest' ? 'text-sky-300 underline decoration-2 underline-offset-4' : 'text-zinc-500 hover:text-zinc-100'"
                 @click="sort = 'newest'">
                 Newest
             </button>
-            <button class="font-medium transition-colors cursor-pointer"
-                :class="sort === 'oldest' ? 'text-foreground underline underline-offset-4' : 'text-muted-foreground hover:text-foreground'"
+            <button class="cursor-pointer transition-colors duration-150"
+                :class="sort === 'oldest' ? 'text-sky-300 underline decoration-2 underline-offset-4' : 'text-zinc-500 hover:text-zinc-100'"
                 @click="sort = 'oldest'">
                 Oldest
             </button>
@@ -343,36 +343,36 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
         <Teleport to="body">
             <Transition name="auth">
                 <div v-if="showAuthDialog" class="fixed inset-0 z-60 flex items-center justify-center p-4">
-                    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="closeAuthDialog" />
+                    <div class="absolute inset-0 bg-black/70" @click="closeAuthDialog" />
                     <div
-                        class="relative flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-lg border border-border bg-card shadow-xl">
-                        <div class="flex items-center justify-between border-b border-border px-6 py-4">
-                            <h3 class="text-base font-semibold text-foreground">
+                        class="relative flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden border border-zinc-700 bg-zinc-950">
+                        <div class="flex items-center justify-between border-b border-zinc-800 px-6 py-4">
+                            <h3 class="label-mono text-[11px] text-zinc-300">
                                 {{ authMode === 'login' ? 'Login' : 'Create account' }}
                             </h3>
-                            <button type="button" class="text-muted-foreground transition-colors hover:text-foreground"
+                            <button type="button" class="text-zinc-500 transition-colors hover:text-zinc-100"
                                 aria-label="Close" @click="closeAuthDialog">
                                 <Icon name="lucide:x" class="h-5 w-5" />
                             </button>
                         </div>
 
                         <div class="flex-1 overflow-y-auto p-6">
-                            <div class="mb-4 flex gap-1 rounded-md bg-muted p-1">
+                            <div class="mb-4 flex border border-zinc-800">
                                 <button type="button"
-                                    class="flex-1 rounded-md py-1.5 text-sm font-medium transition-colors"
-                                    :class="authMode === 'login' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
+                                    class="label-mono flex-1 py-1.5 text-[11px] transition-colors duration-150"
+                                    :class="authMode === 'login' ? 'border-sky-500/40 bg-sky-500/10 text-sky-300' : 'text-zinc-500 hover:text-zinc-100'"
                                     @click="authMode = 'login'">
                                     Login
                                 </button>
                                 <button type="button"
-                                    class="flex-1 rounded-md py-1.5 text-sm font-medium transition-colors"
-                                    :class="authMode === 'register' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
+                                    class="label-mono flex-1 border-l border-zinc-800 py-1.5 text-[11px] transition-colors duration-150"
+                                    :class="authMode === 'register' ? 'border-sky-500/40 bg-sky-500/10 text-sky-300' : 'text-zinc-500 hover:text-zinc-100'"
                                     @click="authMode = 'register'">
                                     Register
                                 </button>
                             </div>
 
-                            <p class="mb-3 text-sm text-muted-foreground">
+                            <p class="label-mono mb-3 text-[11px] text-zinc-600">
                                 {{
                                     authMode === 'login' ? 'Login to join the discussion.' :
                                         'Create an account to comment.'
@@ -382,20 +382,20 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
                             <form class="space-y-3" @submit.prevent="handleAuth">
                                 <input v-if="authMode === 'register'" v-model="authForm.name" type="text"
                                     placeholder="Name" required
-                                    class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                                    class="flex h-10 w-full border border-zinc-800 bg-black px-3 py-2 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400">
                                 <input ref="emailInput" v-model="authForm.email" type="email" placeholder="Email"
                                     required
-                                    class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                                    class="flex h-10 w-full border border-zinc-800 bg-black px-3 py-2 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400">
                                 <input v-model="authForm.password" type="password" placeholder="Password" required
-                                    class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:border-slate-400 hover:border-slate-300">
+                                    class="flex h-10 w-full border border-zinc-800 bg-black px-3 py-2 text-[13px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400">
 
-                                <p v-if="authError" class="flex items-center gap-2 text-sm text-red-600">
+                                <p v-if="authError" class="label-mono flex items-center gap-2 text-[11px] text-red-400">
                                     <Icon name="lucide:alert-circle" class="h-4 w-4 shrink-0" />
                                     {{ authError }}
                                 </p>
 
                                 <button type="submit" :disabled="authLoading"
-                                    class="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+                                    class="label-mono inline-flex h-10 w-full items-center justify-center gap-2 border border-sky-500/40 bg-sky-500/10 px-4 text-[12px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-200 active:bg-sky-500/30 disabled:pointer-events-none disabled:opacity-40">
                                     <Icon v-if="authLoading" name="lucide:loader-circle" class="h-4 w-4 animate-spin" />
                                     {{
                                         authLoading ? 'Please wait…' : (authMode === 'login' ? 'Login' : 'Create account')
@@ -412,14 +412,14 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
         <Teleport to="body">
             <Transition name="share">
                 <div v-if="showShareDialog" class="fixed inset-0 z-60 flex items-center justify-center p-4">
-                    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="closeShareDialog" />
+                    <div class="absolute inset-0 bg-black/70" @click="closeShareDialog" />
                     <div
-                        class="relative w-full max-w-md overflow-hidden rounded-lg border border-border bg-card p-6 shadow-xl">
+                        class="relative w-full max-w-md border border-zinc-700 bg-zinc-950 p-6">
                         <div class="mb-4 flex items-center justify-between">
-                            <h3 class="text-base font-semibold text-foreground">
+                            <h3 class="label-mono text-[11px] text-zinc-300">
                                 Share comment
                             </h3>
-                            <button type="button" class="text-muted-foreground transition-colors hover:text-foreground"
+                            <button type="button" class="text-zinc-500 transition-colors hover:text-zinc-100"
                                 aria-label="Close" @click="closeShareDialog">
                                 <Icon name="lucide:x" class="h-5 w-5" />
                             </button>
@@ -427,9 +427,9 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
 
                         <div class="flex items-center gap-2">
                             <input :value="shareUrl" readonly
-                                class="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none" />
+                                class="label-mono flex-1 border border-zinc-800 bg-black px-3 py-2 text-[12px] text-zinc-200 outline-none focus:border-zinc-400" />
                             <button type="button"
-                                class="inline-flex items-center gap-2 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
+                                class="label-mono inline-flex items-center gap-2 border border-sky-500/40 bg-sky-500/10 px-4 py-2 text-[11px] text-sky-300 transition-colors duration-150 hover:border-sky-400 hover:bg-sky-500/20 hover:text-sky-200 active:bg-sky-500/30"
                                 @click="copyShareUrl">
                                 <Icon name="lucide:copy" class="h-4 w-4" />
                                 {{ shareCopied ? 'Copied' : 'Copy' }}
@@ -438,17 +438,17 @@ function shareTo(platform: 'facebook' | 'twitter' | 'linkedin') {
 
                         <div class="mt-4 flex items-center justify-center gap-4">
                             <button type="button"
-                                class="flex h-10 w-10 items-center justify-center rounded-full bg-[#1877F2] text-white transition-opacity hover:opacity-90"
+                                class="label-mono flex h-10 w-10 items-center justify-center border border-zinc-700 bg-zinc-900/60 text-zinc-300 transition-colors duration-150 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
                                 aria-label="Share on Facebook" @click="shareTo('facebook')">
                                 <Icon name="lucide:facebook" class="h-5 w-5" />
                             </button>
                             <button type="button"
-                                class="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white transition-opacity hover:opacity-90"
+                                class="label-mono flex h-10 w-10 items-center justify-center border border-zinc-700 bg-zinc-900/60 text-zinc-300 transition-colors duration-150 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
                                 aria-label="Share on X" @click="shareTo('twitter')">
                                 <Icon name="lucide:twitter" class="h-5 w-5" />
                             </button>
                             <button type="button"
-                                class="flex h-10 w-10 items-center justify-center rounded-full bg-[#0A66C2] text-white transition-opacity hover:opacity-90"
+                                class="label-mono flex h-10 w-10 items-center justify-center border border-zinc-700 bg-zinc-900/60 text-zinc-300 transition-colors duration-150 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-100"
                                 aria-label="Share on LinkedIn" @click="shareTo('linkedin')">
                                 <Icon name="lucide:linkedin" class="h-5 w-5" />
                             </button>

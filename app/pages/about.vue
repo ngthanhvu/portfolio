@@ -126,48 +126,42 @@ onBeforeUnmount(() => {
   <div class="relative min-h-screen">
     <GridBackground class="h-full w-full" />
 
-    <main class="relative z-30 mx-auto mt-10 max-w-4xl bg-white pb-1 text-neutral-900 md:rounded-t-md">
+    <main class="relative z-30 mx-auto mt-10 max-w-4xl border-x border-zinc-800 bg-zinc-950 pb-1 text-zinc-200">
       <div
-        class="relative flex flex-col justify-stretch px-5 pt-6 md:rounded-t-2xl md:pt-20">
-        <!-- Side gradient lines -->
-        <div
-          class="absolute top-0 left-0 mt-1 hidden h-full w-px -translate-x-px bg-linear-to-b from-transparent to-white md:block" />
-        <div
-          class="absolute top-0 right-0 mt-1 hidden h-full w-px translate-x-px bg-linear-to-b from-transparent to-white md:block" />
-
+        class="relative flex flex-col justify-stretch px-5 pt-6 md:pt-20">
         <!-- Header -->
         <div class="mx-auto w-full max-w-2xl px-5 lg:px-0">
-          <h1 class="text-3xl font-bold md:mb-8 md:text-4xl lg:text-5xl">
+          <h1 class="text-3xl font-bold uppercase tracking-tight text-white md:mb-8 md:text-4xl lg:text-5xl">
             {{ about.title }}
           </h1>
 
-          <div class="mb-6 font-semibold text-neutral-500">
+          <div class="label-mono mb-6 text-[11px] text-zinc-600">
             {{ about.name }}
-            ·
-            <NuxtLink to="/" class="hover:underline decoration-dashed underline-offset-4">
+            /
+            <NuxtLink to="/" class="underline underline-offset-4 hover:text-sky-300">
               Home
             </NuxtLink>
-            ·
-            <NuxtLink to="/posts" class="hover:underline decoration-dashed underline-offset-4">
+            /
+            <NuxtLink to="/posts" class="underline underline-offset-4 hover:text-sky-300">
               Posts
             </NuxtLink>
           </div>
 
           <!-- TOC -->
-          <details v-if="headings.length > 0" class="group mb-10 rounded-xl border border-neutral-200">
+          <details v-if="headings.length > 0" class="group mb-10 border border-zinc-800 bg-black">
             <summary class="flex cursor-pointer select-none items-center justify-between px-4 py-3">
-              <span class="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
+              <span class="label-mono text-[11px] text-zinc-300">
                 Table of Content
               </span>
-              <span class="text-xs text-neutral-500 group-open:hidden">Expand</span>
-              <span class="hidden text-xs text-neutral-500 group-open:inline">Collapse</span>
+              <span class="label-mono text-[11px] text-zinc-600 group-open:hidden">Expand</span>
+              <span class="label-mono hidden text-[11px] text-zinc-600 group-open:inline">Collapse</span>
             </summary>
-            <nav class="mt-2 space-y-2 px-4 pb-4 text-sm text-neutral-600">
+            <nav class="mt-2 space-y-2 border-t border-zinc-800 px-4 py-4 text-[12px] text-zinc-500">
               <button
                 v-for="heading in headings"
                 :key="heading.id"
                 type="button"
-                class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-neutral-900"
+                class="block w-full cursor-pointer border-0 bg-transparent p-0 text-left leading-relaxed transition-colors hover:text-zinc-100"
                 :class="{
                   'ml-4': heading.level === 2,
                   'ml-10': heading.level >= 3
@@ -194,18 +188,18 @@ onBeforeUnmount(() => {
                 :title="heading.text" :aria-label="`Jump to ${heading.text}`"
                 :aria-current="activeSlug === heading.id ? 'true' : undefined" @click="scrollToHeading(heading.id)">
                 <span
-                  class="toc-line block h-0.75 rounded-full bg-neutral-300/90 opacity-80 transition-all duration-200 group-hover/toc:opacity-0!"
+                  class="toc-line block h-0.75 bg-zinc-600 opacity-80 transition-all duration-150 group-hover/toc:opacity-0!"
                   :class="{
                     'w-12': heading.level === 2,
                     'w-8': heading.level >= 3,
                     'is-active': activeSlug === heading.id
                   }" />
                 <span
-                  class="absolute inset-y-0 left-0 flex items-center pr-4 text-xs text-neutral-500 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
+                  class="absolute inset-y-0 left-0 flex items-center pr-4 text-[11px] text-zinc-600 opacity-0 transition-opacity duration-150 group-hover/toc:opacity-100"
                   :class="{
                     'pl-0': heading.level === 2,
                     'pl-3': heading.level >= 3,
-                    'font-semibold text-neutral-900!': activeSlug === heading.id
+                    'font-semibold text-zinc-100!': activeSlug === heading.id
                   }">
                   <span class="overflow-hidden text-ellipsis whitespace-nowrap">
                     {{ heading.text }}
@@ -226,7 +220,7 @@ onBeforeUnmount(() => {
   margin-bottom: 1rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0a0a0a;
+  color: #d4d4d8;
 }
 
 .article-content :deep(h3) {
@@ -234,7 +228,7 @@ onBeforeUnmount(() => {
   margin-bottom: 0.75rem;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #0a0a0a;
+  color: #d4d4d8;
 }
 
 .article-content :deep(h4) {
@@ -242,7 +236,7 @@ onBeforeUnmount(() => {
   margin-bottom: 0.5rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #0a0a0a;
+  color: #d4d4d8;
 }
 
 .article-content :deep(p) {
@@ -253,14 +247,23 @@ onBeforeUnmount(() => {
 .article-content :deep(a) {
   color: inherit;
   text-decoration: underline;
-  text-decoration-style: dashed;
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+.article-content :deep(a) {
+  color: #7dd3fc;
+}
+
+.article-content :deep(a:hover) {
+  color: #bae6fd;
 }
 
 .article-content :deep(img) {
   width: 100%;
   margin: 1.5rem 0;
-  border-radius: 0.5rem;
+  border: 1px solid #373e4b;
 }
 
 .article-content :deep(ul),
@@ -281,7 +284,7 @@ onBeforeUnmount(() => {
 
 .toc-line.is-active {
   height: 4px;
-  background-color: rgb(23 23 23);
+  background-color: #38bdf8;
   opacity: 1;
 }
 

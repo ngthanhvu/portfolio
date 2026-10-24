@@ -5,6 +5,6 @@ const model = defineModel<string>()
 <template>
   <input
     v-model="model"
-    class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-slate-400 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-50"
+    class="label-mono flex h-9 w-full border border-zinc-800 bg-black px-3 py-2 text-[12px] text-zinc-200 outline-none transition-colors placeholder:text-zinc-600 hover:border-zinc-600 focus:border-zinc-400 disabled:cursor-not-allowed disabled:opacity-40"
   />
 </template>

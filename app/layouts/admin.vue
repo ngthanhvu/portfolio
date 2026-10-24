@@ -48,14 +48,14 @@ async function logout() {
       <div class="flex h-12 shrink-0 items-center border-b border-border px-4"
         :class="collapsed ? 'justify-center' : 'justify-between'">
         <NuxtLink v-if="!collapsed" to="/admin" class="flex min-w-0 flex-1 items-center gap-3">
-          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center border border-sky-500/40 bg-sky-500/10 text-sky-300">
             <Icon name="lucide:layout-grid" class="h-5 w-5" />
           </div>
           <div class="min-w-0">
-            <p class="truncate text-sm font-bold text-foreground">
-              Portfolio Admin
+            <p class="label-mono truncate text-[13px] font-bold tracking-[0.06em] text-white">
+              PORTFOLIO ADMIN
             </p>
-            <p class="truncate text-xs text-muted-foreground">
+            <p class="label-mono truncate text-[10px] text-zinc-600">
               Dashboard
             </p>
           </div>
@@ -71,32 +71,32 @@ async function logout() {
 
       <!-- Navigation -->
       <div class="flex-1 overflow-y-auto py-4">
-        <div v-if="!collapsed" class="px-4 pb-2 pt-1 text-xs font-bold tracking-wider text-muted-foreground">
+        <div v-if="!collapsed" class="label-mono px-4 pb-2 pt-1 text-[11px] text-zinc-600">
           General
         </div>
         <nav class="space-y-1 px-2">
           <NuxtLink v-for="link in links" :key="link.path" :to="link.path"
-            class="flex items-center rounded-md py-2 text-sm font-semibold transition-colors" :class="[
-              collapsed ? 'justify-center px-2' : 'gap-3 px-3',
+            class="label-mono flex items-center border py-1.5 text-[11px] transition-colors duration-150" :class="[
+              collapsed ? 'justify-center border-transparent px-2' : 'gap-3 border-transparent px-3',
               isActive(link.path, link.exact)
-                ? 'bg-muted text-foreground'
-                : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                ? 'border-sky-500/40 bg-sky-500/10 text-sky-300'
+                : 'text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-zinc-100',
             ]" :title="collapsed ? link.name : undefined">
             <Icon :name="link.icon" class="h-4 w-4 shrink-0" />
             <span v-if="!collapsed" class="truncate">{{ link.name }}</span>
           </NuxtLink>
         </nav>
 
-        <div v-if="!collapsed" class="mt-6 px-4 pb-2 pt-1 text-xs font-bold tracking-wider text-muted-foreground">
+        <div v-if="!collapsed" class="label-mono mt-6 px-4 pb-2 pt-1 text-[11px] text-zinc-600">
           Other
         </div>
         <nav class="space-y-1 px-2">
           <NuxtLink v-for="link in otherLinks" :key="link.path" :to="link.path"
-            class="flex items-center rounded-md py-2 text-sm font-semibold transition-colors" :class="[
-              collapsed ? 'justify-center px-2' : 'gap-3 px-3',
+            class="label-mono flex items-center border py-1.5 text-[11px] transition-colors duration-150" :class="[
+              collapsed ? 'justify-center border-transparent px-2' : 'gap-3 border-transparent px-3',
               isActive(link.path, link.exact)
-                ? 'bg-muted text-foreground'
-                : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                ? 'border-sky-500/40 bg-sky-500/10 text-sky-300'
+                : 'text-zinc-400 hover:border-zinc-700 hover:bg-zinc-900/60 hover:text-zinc-100',
             ]" :title="collapsed ? link.name : undefined">
             <Icon :name="link.icon" class="h-4 w-4 shrink-0" />
             <span v-if="!collapsed" class="truncate">{{ link.name }}</span>

@@ -16,38 +16,25 @@ const currentYear = new Date().getFullYear()
 </script>
 
 <template>
-  <footer class="relative z-20 border-t border-neutral-200 bg-white">
-    <div class="container mx-auto max-w-7xl px-7 py-2">
-      <!-- Branding: centered on mobile, shown inline on desktop -->
-      <div class="mb-3 flex justify-center sm:hidden">
-        <NuxtLink to="/" class="flex items-center gap-2 text-sm font-semibold text-neutral-900">
-          <img :src="profile.avatar" :alt="profile.name" class="h-5 w-5 rounded-full" />
-          <span class="text-nowrap">Hi, {{ profile.name }}</span>
-        </NuxtLink>
-      </div>
+  <footer class="relative z-20 border-t border-zinc-800 bg-black">
+    <div class="mx-auto flex h-10 max-w-5xl items-center justify-center gap-3 px-4 text-[11px] sm:px-6 lg:px-8">
+      <NuxtLink to="/" class="label-mono hidden shrink-0 items-center gap-2 text-zinc-100 sm:flex">
+        <span class="text-[9px] leading-none text-sky-400">●</span>
+        <span class="max-w-40 truncate">{{ profile.name }}</span>
+      </NuxtLink>
 
-      <!-- Single centered item on mobile, flex row on desktop -->
-      <div class="flex justify-center sm:flex sm:flex-row sm:items-center sm:justify-center">
-        <NuxtLink to="/" class="hidden items-center gap-2 text-sm font-semibold text-neutral-900 sm:flex">
-          <img :src="profile.avatar" :alt="profile.name" class="h-5 w-5 rounded-full" />
-          <span class="text-nowrap">Hi, {{ profile.name }}</span>
-        </NuxtLink>
+      <span class="label-mono hidden border-l border-zinc-800 pl-3 text-zinc-500 sm:inline">
+        UP {{ runningDays.toLocaleString() }}D
+      </span>
 
-        <p
-          class="hidden text-center text-xs leading-snug text-neutral-700 sm:block sm:ml-4 sm:border-l sm:border-neutral-300 sm:pl-4 sm:text-left sm:text-sm">
-          Running for {{ runningDays.toLocaleString() }} days
-        </p>
+      <span class="label-mono truncate text-zinc-500">
+        &copy; {{ currentYear }} {{ profile.name }}
+      </span>
 
-        <p
-          class="text-center text-xs leading-snug text-neutral-700 sm:ml-4 sm:border-l sm:border-neutral-300 sm:pl-4 sm:text-left sm:text-sm">
-          &copy; {{ currentYear }} {{ profile.name }}. All rights reserved. Please credit when sharing.
-        </p>
-
-        <NuxtLink to="/sitemap.xml"
-          class="hidden text-center text-xs leading-snug text-neutral-700 transition-colors hover:text-neutral-900 sm:inline sm:ml-4 sm:border-l sm:border-neutral-300 sm:pl-4 sm:text-left sm:text-sm">
-          Sitemap
-        </NuxtLink>
-      </div>
+      <NuxtLink to="/sitemap.xml"
+        class="label-mono hidden border-l border-zinc-800 pl-3 text-zinc-500 transition-colors hover:text-zinc-100 sm:inline">
+        SITEMAP
+      </NuxtLink>
     </div>
   </footer>
 </template>
